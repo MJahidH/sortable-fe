@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import ToDoPage from "./components/ToDoPage";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
+import { useState } from "react";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -11,13 +12,21 @@ const name = `Jahid`;
 const description = `this is my notes app`;
 
 export default function App() {
+  const [toDoScreen, setToDoScreen] = useState(true);
+
+  const isToDoScreen = () => {
+    setToDoScreen(!toDoScreen);
+  };
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Todo" component={ToDoPage} />
-        <Tab.Screen name="Done" component={DonePage} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Button title="done" onPress={isToDoScreen} />
+      {toDoScreen ? (
+        <ToDoPage style={styles.text} />
+      ) : (
+        <DonePage style={styles.text} />
+      )}
+    </View>
   );
 }
 
