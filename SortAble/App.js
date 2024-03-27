@@ -1,17 +1,23 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import ToDoPage from "./components/ToDoPage";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import DonePage from "./components/DonePage";
+
+const Tab = createMaterialTopTabNavigator();
 
 const name = `Jahid`;
 const description = `this is my notes app`;
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{name}</Text>
-      <Text style={styles.text}>{description}</Text>
-
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Todo" component={ToDoPage} />
+        <Tab.Screen name="Done" component={DonePage} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
