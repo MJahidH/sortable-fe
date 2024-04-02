@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 
-export default function ToDoPage({ style, fileContent }) {
+export default function ToDoPage({ style, fileContent,buttonStyle }) {
   return (
     <View>
       {fileContent.map((toDoItem) => {
         return (
           <View>
-            <Pressable>
-              <Text style={style}>this is a button</Text>
+            <Pressable style={buttonStyle}>
+
             </Pressable>
             <Text style={style}>{toDoItem.title}</Text>
           </View>

@@ -51,16 +51,19 @@ export default function App() {
   const isToDoScreen = () => {
     setToDoScreen(!toDoScreen);
   };
-  console.log(fileContent)
+  console.log(fileContent);
   return (
     <View style={styles.container}>
       <Button title="done" onPress={isToDoScreen} />
       {toDoScreen ? (
-        <ToDoPage style={styles.text} fileContent={fileContent}/>
+        <ToDoPage
+          buttonStyle={styles.button}
+          style={styles.text}
+          fileContent={fileContent}
+        />
       ) : (
         <DonePage style={styles.text} />
       )}
-      
     </View>
   );
 }
@@ -74,5 +77,16 @@ const styles = StyleSheet.create({
   },
   text: {
     color: `#FFF`,
+  },
+  button: {
+    // To create a circle, you need to make sure the height and width are equal
+    height: 38,
+    width: 38,
+
+    padding: 10,
+    borderRadius: 50,
+    backgroundColor: "transparent",
+    borderColor : `#FFF`,
+    borderWidth : 4
   },
 });
