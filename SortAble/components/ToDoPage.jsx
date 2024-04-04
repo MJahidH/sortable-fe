@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Pressable, SwitchBase } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Pressable,
+  SwitchBase,
+} from "react-native";
+import AddNewToDoItem from "./AddNewToDoItem";
 
 export default function ToDoPage({ style, fileContent }) {
   const [doneStatus, setDoneStatus] = useState(
@@ -21,7 +29,7 @@ export default function ToDoPage({ style, fileContent }) {
   };
 
   return (
-    <View>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       {fileContent.map((toDoItem, index) => {
         return (
           <View key={index}>
@@ -47,7 +55,8 @@ export default function ToDoPage({ style, fileContent }) {
           </View>
         );
       })}
-    </View>
+      <AddNewToDoItem style={style} />
+    </ScrollView>
   );
 }
 const buttonStyles = StyleSheet.create({
@@ -77,5 +86,12 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: "",
     backgroundColor: "#FFA500",
     borderWidth: 4,
+  },
+});
+const styles = StyleSheet.create({
+  contentContainer: {
+    flexGrow: 10,
+    justifyContent: "center",
+    alignItems: "left",
   },
 });
