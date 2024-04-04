@@ -90,8 +90,7 @@ const buttonStyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   contentContainer: {
-    flexGrow: 10,
-    justifyContent: "center",
-    alignItems: "left",
+    flex: 1,
+    marginTop: 100,
   },
 });

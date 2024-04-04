@@ -49,12 +49,15 @@ export default function App() {
   }, []);
 
   const isToDoScreen = () => {
+    console.log("button has been pressed")
     setToDoScreen(!toDoScreen);
   };
   console.log(fileContent);
   return (
     <View style={styles.container}>
-      <Button title="done" onPress={isToDoScreen} />
+      <View style={styles.buttonTrigger}>
+        <Button title="done" onPress={isToDoScreen} />
+      </View>
       {toDoScreen ? (
         <ToDoPage
           buttonStyle={styles.button}
@@ -86,7 +89,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
     backgroundColor: "transparent",
-    borderColor : `#FFF`,
-    borderWidth : 4
+    borderColor: `#FFF`,
+    borderWidth: 4,
+  },
+  buttonTrigger: {
+    position: "absolute",
+    top: StatusBar.currentHeight || 40,
+    zIndex: 10,
+    width: 100,
+    alignSelf: "center",
   },
 });
