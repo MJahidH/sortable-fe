@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import * as FileSystem from "expo-file-system";
 
 export default function AddNewToDoItem({ style }) {
   const [newDoneItem, setNewDoneItem] = useState({
     title: "",
     isDone: false,
   });
-  useEffect(() => {
-    console.log(newDoneItem);
-  }, [newDoneItem]);
 
-  
+  const handleSubmit = () => {
+    const filePath = FileSystem.documentDirectory + "data.json";
+    FileSystem.readAsStringAsync(filePath)
+      .then((content) => {
+        const parsedData = JSON.parse(content);
+        parsedData.push(newDoneItem);
+        return parsedData;
+      })
+      .then((updatedData) => {
+        const stringData = JSON.stringify(updatedData);
+        return FileSystem.writeAsStringAsync(filePath, stringData);
+      });
+  };
+
   const handleChange = (event) => {
     setNewDoneItem({
-        ...newDoneItem,
-        title : event
-    })
+      ...newDoneItem,
+      title: event,
+    });
   };
 
   return (
@@ -27,6 +38,7 @@ export default function AddNewToDoItem({ style }) {
         placeholder="add new item"
         placeholderTextColor="#FFFF00"
         onChangeText={handleChange}
+        onSubmitEditing={handleSubmit}
       />
     </View>
   );
