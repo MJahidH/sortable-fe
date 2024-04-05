@@ -40,6 +40,7 @@ export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
         placeholderTextColor="#FFFF00"
         onChangeText={handleChange}
         onSubmitEditing={handleSubmit}
+        value={newDoneItem.title}
       />
     </View>
   );
