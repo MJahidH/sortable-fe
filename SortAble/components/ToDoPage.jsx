@@ -90,7 +90,7 @@ const buttonStyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
-    marginTop: 100,
+
+    paddingTop : 20
   },
 });

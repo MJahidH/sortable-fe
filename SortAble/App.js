@@ -49,7 +49,7 @@ export default function App() {
   }, []);
 
   const isToDoScreen = () => {
-    console.log("button has been pressed")
+    console.log("button has been pressed");
     setToDoScreen(!toDoScreen);
   };
   console.log(fileContent);
@@ -59,11 +59,13 @@ export default function App() {
         <Button title="done" onPress={isToDoScreen} />
       </View>
       {toDoScreen ? (
-        <ToDoPage
-          buttonStyle={styles.button}
-          style={styles.text}
-          fileContent={fileContent}
-        />
+        <View style={styles.parentDiv}>
+          <ToDoPage
+            buttonStyle={styles.button}
+            style={styles.text}
+            fileContent={fileContent}
+          />
+        </View>
       ) : (
         <DonePage style={styles.text} />
       )}
@@ -77,6 +79,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     alignItems: "center",
     justifyContent: "center",
+  },
+  parentDiv: {
+    flex : 1,
+    marginTop : 100,
+    width : "100%",
+
+
   },
   text: {
     color: `#FFF`,
