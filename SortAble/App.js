@@ -52,7 +52,7 @@ export default function App() {
     console.log("button has been pressed");
     setToDoScreen(!toDoScreen);
   };
-  console.log(fileContent);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonTrigger}>
@@ -64,6 +64,7 @@ export default function App() {
             buttonStyle={styles.button}
             style={styles.text}
             fileContent={fileContent}
+            setFileContent={setFileContent}
           />
         </View>
       ) : (
@@ -82,8 +83,9 @@ const styles = StyleSheet.create({
   },
   parentDiv: {
     flex : 1,
-    marginTop : 100,
+    marginTop : 80,
     width : "100%",
+    marginBottom : 50
 
 
   },

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 
-export default function ToDoPage({ style, fileContent }) {
+export default function ToDoPage({ style, fileContent,setFileContent }) {
   const [doneStatus, setDoneStatus] = useState(
     Array(fileContent.length).fill(false)
   );
@@ -55,7 +55,10 @@ export default function ToDoPage({ style, fileContent }) {
           </View>
         );
       })}
-      <AddNewToDoItem style={style} />
+      <AddNewToDoItem 
+      style={style}
+      fileContent={fileContent}
+      setFileContent={setFileContent} />
     </ScrollView>
   );
 }
