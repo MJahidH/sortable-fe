@@ -61,7 +61,7 @@ export default function App() {
       {toDoScreen ? (
         <View style={styles.parentDiv}>
           <ToDoPage
-            buttonStyle={styles.button}
+            buttonStyle={styles.button}q
             style={styles.text}
             fileContent={fileContent}
             setFileContent={setFileContent}

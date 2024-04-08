@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 
-export default function ToDoPage({ style, fileContent,setFileContent }) {
+export default function ToDoPage({ style, fileContent, setFileContent }) {
   const [doneStatus, setDoneStatus] = useState(
     Array(fileContent.length).fill(false)
   );
@@ -26,6 +26,17 @@ export default function ToDoPage({ style, fileContent,setFileContent }) {
     const newProgressStatus = [...progressStatus];
     newProgressStatus[index] = !newProgressStatus[index];
     setProgressStatus(newProgressStatus);
+    console.log("in prgoress has bene tooggled");
+  };
+
+  const handleColor = (index) => {
+    if (progressStatus[index]) {
+      return buttonStyles.inProgress;
+    } else if (doneStatus[index]) {
+      return buttonStyles.isDone;
+    } else {
+      return buttonStyles.notDone;
+    }
   };
 
   return (
@@ -34,38 +45,31 @@ export default function ToDoPage({ style, fileContent,setFileContent }) {
         return (
           <View key={index}>
             <Pressable
-              style={
-                doneStatus[index] ? buttonStyles.isDone : buttonStyles.notDone
-              }
+              style={handleColor(index)}
               onPress={() => {
                 toggleIsDone(index);
               }}
-            ></Pressable>
-            <Pressable
-              style={
-                progressStatus[index]
-                  ? buttonStyles.inProgress
-                  : buttonStyles.notDone
-              }
-              onPress={() => {
+              onLongPress={() => {
                 toggleInProgress(index);
               }}
             ></Pressable>
+
             <Text style={style}>{toDoItem.title}</Text>
           </View>
         );
       })}
-      <AddNewToDoItem 
-      style={style}
-      fileContent={fileContent}
-      setFileContent={setFileContent} />
+      <AddNewToDoItem
+        style={style}
+        fileContent={fileContent}
+        setFileContent={setFileContent}
+      />
     </ScrollView>
   );
 }
 const buttonStyles = StyleSheet.create({
   notDone: {
-    height: 38,
-    width: 38,
+    height: 55,
+    width: 55,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "transparent",
@@ -73,8 +77,8 @@ const buttonStyles = StyleSheet.create({
     borderWidth: 4,
   },
   isDone: {
-    height: 38,
-    width: 38,
+    height: 55,
+    width: 55,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "",
@@ -82,8 +86,8 @@ const buttonStyles = StyleSheet.create({
     borderWidth: 4,
   },
   inProgress: {
-    height: 38,
-    width: 38,
+    height: 55,
+    width: 55,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "",
@@ -93,7 +97,6 @@ const buttonStyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   contentContainer: {
-
-    paddingTop : 20
+    paddingTop: 20,
   },
 });
