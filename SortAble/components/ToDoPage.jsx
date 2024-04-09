@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -10,6 +10,8 @@ import {
   Platform,
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
+import * as FileSystem from "expo-file-system";
+import ToDoItemFilePath from "../ToDoItemFilePath";
 
 export default function ToDoPage({ style, fileContent, setFileContent }) {
   const [doneStatus, setDoneStatus] = useState(
@@ -23,7 +25,20 @@ export default function ToDoPage({ style, fileContent, setFileContent }) {
     const newDoneStatus = [...doneStatus];
     newDoneStatus[index] = !newDoneStatus[index];
     setDoneStatus(newDoneStatus);
+
+    FileSystem.readAsStringAsync(ToDoItemFilePath).then((content) => {
+      const parsedData = JSON.parse(content);
+      parsedData[index].isDone = !parsedData[index].isDone;
+      const stringData = JSON.stringify(parsedData);
+      FileSystem.writeAsStringAsync(ToDoItemFilePath, stringData);
+      setFileContent([...parsedData])
+    });
   };
+
+  useEffect(() => {
+    console.log(fileContent);
+  }, [doneStatus]);
+
   const toggleInProgress = (index) => {
     const newProgressStatus = [...progressStatus];
     newProgressStatus[index] = !newProgressStatus[index];
