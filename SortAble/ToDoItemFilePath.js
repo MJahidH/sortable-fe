@@ -1,3 +1,5 @@
 import * as FileSystem from "expo-file-system";
 
-export default ToDoItemFilePath =  FileSystem.documentDirectory + "data.json"
+export const  ToDoItemFilePath =  FileSystem.documentDirectory + "data.json"
+
+export const  savedStateFilePath =  FileSystem.documentDirectory + "saved-state-70.json"

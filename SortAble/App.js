@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
+import {ToDoItemFilePath} from "./ToDoItemFilePath";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,7 +17,7 @@ export default function App() {
   const [toDoScreen, setToDoScreen] = useState(true);
 
   const [fileContent, setFileContent] = useState([]);
-  const filePath = FileSystem.documentDirectory + "data.json";
+  const filePath = ToDoItemFilePath
 
   useEffect(() => {
     FileSystem.getInfoAsync(filePath)

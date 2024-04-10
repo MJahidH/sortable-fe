@@ -8,36 +8,71 @@ import {
   SwitchBase,
   KeyboardAvoidingView,
   Platform,
+  PanResponder,
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 import * as FileSystem from "expo-file-system";
-import ToDoItemFilePath from "../ToDoItemFilePath";
+import { ToDoItemFilePath, savedStateFilePath } from "../ToDoItemFilePath";
 
 export default function ToDoPage({ style, fileContent, setFileContent }) {
-  const [doneStatus, setDoneStatus] = useState(
-    Array(fileContent.length).fill(false)
-  );
-  const [progressStatus, setProgressStatus] = useState(
-    Array(fileContent.length).fill(false)
-  );
+  const [doneStatus, setDoneStatus] = useState([]);
+  const [progressStatus, setProgressStatus] = useState([]);
+
+  useEffect(() => {
+    FileSystem.getInfoAsync(savedStateFilePath)
+      .then((fileInfo) => {
+        if (!fileInfo.exists) {
+          const initialData = JSON.stringify({
+            doneState: Array(fileContent.length).fill(false),
+            progressState: Array(fileContent.length).fill(false),
+          });
+          return FileSystem.writeAsStringAsync(
+            savedStateFilePath,
+            initialData
+          ).then(() => {
+            initialData;
+          });
+        } else {
+          return FileSystem.readAsStringAsync(savedStateFilePath);
+        }
+      })
+      .then((content) => {
+        const parsedData = JSON.parse(content);
+        setDoneStatus(parsedData.doneState);
+        setProgressStatus(parsedData.progressState);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(()=>{
+const dataToSabe = JSON.stringify({
+  doneState : [...doneStatus],
+  progressState : [...progressStatus]
+})
+console.log(dataToSabe)
+FileSystem.writeAsStringAsync(savedStateFilePath,dataToSabe)
+  },[doneStatus,progressStatus])
+
 
   const toggleIsDone = (index) => {
     const newDoneStatus = [...doneStatus];
+
     newDoneStatus[index] = !newDoneStatus[index];
+
     setDoneStatus(newDoneStatus);
 
     FileSystem.readAsStringAsync(ToDoItemFilePath).then((content) => {
       const parsedData = JSON.parse(content);
       parsedData[index].isDone = !parsedData[index].isDone;
       const stringData = JSON.stringify(parsedData);
-      FileSystem.writeAsStringAsync(ToDoItemFilePath, stringData);
-      setFileContent([...parsedData])
+
+      FileSystem.writeAsStringAsync(ToDoItemFilePath, stringData).then(() => {
+        setFileContent([...parsedData]);
+      });
     });
   };
-
-  useEffect(() => {
-    console.log(fileContent);
-  }, [doneStatus]);
 
   const toggleInProgress = (index) => {
     const newProgressStatus = [...progressStatus];
