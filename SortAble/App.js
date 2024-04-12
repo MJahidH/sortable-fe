@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import {ToDoItemFilePath} from "./ToDoItemFilePath";
+import { ToDoItemFilePath } from "./ToDoItemFilePath";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -17,36 +17,35 @@ export default function App() {
   const [toDoScreen, setToDoScreen] = useState(true);
 
   const [fileContent, setFileContent] = useState([]);
-  const filePath = ToDoItemFilePath
+  const filePath = ToDoItemFilePath;
 
   useEffect(() => {
-    FileSystem.getInfoAsync(filePath)
-      .then((fileInfo) => {
-        if (!fileInfo.exists) {
-          console.log("This file does not exist ");
-          const initialData = JSON.stringify([
-            {
-              title: "Clean my room",
-              isDone: false,
-            },
-            {
-              title: "Buy eggs",
-              isDone: false,
-            },
-          ]);
-          return FileSystem.writeAsStringAsync(filePath, initialData).then(
-            () => {
-              initialData;
-            }
-          );
-        } else {
-          console.log("File exists, reading content");
-          return FileSystem.readAsStringAsync(filePath);
-        }
-      })
-      .then((content) => {
-        setFileContent(JSON.parse(content));
-      });
+    FileSystem.getInfoAsync(filePath).then((fileInfo) => {
+      if (!fileInfo.exists) {
+        console.log("This file does not exist ");
+        const initialData = JSON.stringify( [
+          {
+            title: "Clean my room",
+            isDone: false,
+          },
+          {
+            title: "Buy eggs",
+            isDone: false,
+          },
+        ]);
+        FileSystem.writeAsStringAsync(filePath, initialData).then(() => {
+          FileSystem.readAsStringAsync(filePath).then((content) => {
+            console.log(content, "inside app js file");
+            setFileContent(JSON.parse(content));
+          });
+        });
+      } else {
+        console.log("File exists, reading content");
+        return FileSystem.readAsStringAsync(filePath).then((content) => {
+          setFileContent(JSON.parse(content));
+        });
+      }
+    });
   }, []);
 
   const isToDoScreen = () => {
@@ -62,7 +61,7 @@ export default function App() {
       {toDoScreen ? (
         <View style={styles.parentDiv}>
           <ToDoPage
-            buttonStyle={styles.button}q
+            buttonStyle={styles.button}
             style={styles.text}
             fileContent={fileContent}
             setFileContent={setFileContent}
@@ -83,12 +82,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   parentDiv: {
-    flex : 1,
-    marginTop : 80,
-    width : "100%",
-    marginBottom : 50
-
-
+    flex: 1,
+    marginTop: 80,
+    width: "100%",
+    marginBottom: 50,
   },
   text: {
     color: `#FFF`,

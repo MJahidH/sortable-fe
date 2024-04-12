@@ -15,10 +15,20 @@ import * as FileSystem from "expo-file-system";
 import { ToDoItemFilePath, savedStateFilePath } from "../ToDoItemFilePath";
 
 export default function ToDoPage({ style, fileContent, setFileContent }) {
-  const [doneStatus, setDoneStatus] = useState([]);
-  const [progressStatus, setProgressStatus] = useState([]);
+  const [doneStatus, setDoneStatus] = useState(
+    Array(fileContent.length).fill(false)
+  );
+
+const [progressStatus, setProgressStatus] = useState(
+    Array(fileContent.length).fill(false)
+  );
+
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
+    console.log(fileContent, "this is the file content");
+    setRefresh(true);
+
     FileSystem.getInfoAsync(savedStateFilePath)
       .then((fileInfo) => {
         if (!fileInfo.exists) {
@@ -26,35 +36,45 @@ export default function ToDoPage({ style, fileContent, setFileContent }) {
             doneState: Array(fileContent.length).fill(false),
             progressState: Array(fileContent.length).fill(false),
           });
-          return FileSystem.writeAsStringAsync(
-            savedStateFilePath,
-            initialData
-          ).then(() => {
-            initialData;
-          });
+          return FileSystem.writeAsStringAsync(savedStateFilePath, initialData)
+            .then(() => {
+              return initialData;
+            })
+            .then((content) => {
+              const parsedData = JSON.parse(content);
+              console.log(content, "if block");
+              setDoneStatus([...parsedData.doneState]);
+              setProgressStatus([...parsedData.progressState]);
+            });
         } else {
-          return FileSystem.readAsStringAsync(savedStateFilePath);
+          FileSystem.readAsStringAsync(savedStateFilePath).then((content) => {
+            console.log(content, "else block");
+            const parsedData = JSON.parse(content);
+            setDoneStatus([...parsedData.doneState]);
+            setProgressStatus([...parsedData.progressState]);
+          });
         }
-      })
-      .then((content) => {
-        const parsedData = JSON.parse(content);
-        setDoneStatus(parsedData.doneState);
-        setProgressStatus(parsedData.progressState);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setRefresh(false);
       });
-  }, []);
+  }, [fileContent]);
 
-  useEffect(()=>{
-const dataToSabe = JSON.stringify({
-  doneState : [...doneStatus],
-  progressState : [...progressStatus]
-})
-console.log(dataToSabe)
-FileSystem.writeAsStringAsync(savedStateFilePath,dataToSabe)
-  },[doneStatus,progressStatus])
+  useEffect(() => {
+    if (fileContent.length > 0) {
+      const dataToSabe = JSON.stringify({
+        doneState: [...doneStatus],
+        progressState: [...progressStatus],
+      });
 
+      FileSystem.writeAsStringAsync(savedStateFilePath, dataToSabe);
+    } else {
+      console.log("file content is empty ");
+    }
+  }, [doneStatus, progressStatus]);
 
   const toggleIsDone = (index) => {
     const newDoneStatus = [...doneStatus];
