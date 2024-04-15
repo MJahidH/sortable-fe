@@ -22,7 +22,7 @@ export default function App() {
   useEffect(() => {
     FileSystem.getInfoAsync(filePath).then((fileInfo) => {
       if (!fileInfo.exists) {
-        console.log("This file does not exist ");
+
         const initialData = JSON.stringify( [
           {
             title: "Clean my room",
@@ -35,12 +35,12 @@ export default function App() {
         ]);
         FileSystem.writeAsStringAsync(filePath, initialData).then(() => {
           FileSystem.readAsStringAsync(filePath).then((content) => {
-            console.log(content, "inside app js file");
+
             setFileContent(JSON.parse(content));
           });
         });
       } else {
-        console.log("File exists, reading content");
+
         return FileSystem.readAsStringAsync(filePath).then((content) => {
           setFileContent(JSON.parse(content));
         });
@@ -49,7 +49,7 @@ export default function App() {
   }, []);
 
   const isToDoScreen = () => {
-    console.log("button has been pressed");
+
     setToDoScreen(!toDoScreen);
   };
 

@@ -13,6 +13,7 @@ import {
 import AddNewToDoItem from "./AddNewToDoItem";
 import * as FileSystem from "expo-file-system";
 import { ToDoItemFilePath, savedStateFilePath } from "../ToDoItemFilePath";
+import MoveToDonePile from "./MoveToDonePile";
 
 export default function ToDoPage({ style, fileContent, setFileContent }) {
   const [doneStatus, setDoneStatus] = useState(
@@ -26,8 +27,8 @@ const [progressStatus, setProgressStatus] = useState(
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    console.log(fileContent, "this is the file content");
-    setRefresh(true);
+
+
 
     FileSystem.getInfoAsync(savedStateFilePath)
       .then((fileInfo) => {
@@ -42,13 +43,12 @@ const [progressStatus, setProgressStatus] = useState(
             })
             .then((content) => {
               const parsedData = JSON.parse(content);
-              console.log(content, "if block");
               setDoneStatus([...parsedData.doneState]);
               setProgressStatus([...parsedData.progressState]);
             });
         } else {
           FileSystem.readAsStringAsync(savedStateFilePath).then((content) => {
-            console.log(content, "else block");
+
             const parsedData = JSON.parse(content);
             setDoneStatus([...parsedData.doneState]);
             setProgressStatus([...parsedData.progressState]);
@@ -72,7 +72,7 @@ const [progressStatus, setProgressStatus] = useState(
 
       FileSystem.writeAsStringAsync(savedStateFilePath, dataToSabe);
     } else {
-      console.log("file content is empty ");
+
     }
   }, [doneStatus, progressStatus]);
 
@@ -98,7 +98,7 @@ const [progressStatus, setProgressStatus] = useState(
     const newProgressStatus = [...progressStatus];
     newProgressStatus[index] = !newProgressStatus[index];
     setProgressStatus(newProgressStatus);
-    console.log("in prgoress has bene tooggled");
+
   };
 
   const handleColor = (index) => {
@@ -117,6 +117,7 @@ const [progressStatus, setProgressStatus] = useState(
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <ScrollView contentContainerStyle={styles.contentContainer}>
+        <MoveToDonePile/>
         {fileContent.map((toDoItem, index) => {
           return (
             <View key={index} style={styles.itemContainer}>
