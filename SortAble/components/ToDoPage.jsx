@@ -12,83 +12,39 @@ import {
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 import * as FileSystem from "expo-file-system";
-import { ToDoItemFilePath, savedStateFilePath } from "../ToDoItemFilePath";
+import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 
-export default function ToDoPage({ style, fileContent, setFileContent }) {
-  const [doneStatus, setDoneStatus] = useState(
-    Array(fileContent.length).fill(false)
-  );
-
-const [progressStatus, setProgressStatus] = useState(
-    Array(fileContent.length).fill(false)
-  );
-
-  const [refresh, setRefresh] = useState(false);
-
-  useEffect(() => {
+export default function ToDoPage({ style, fileContent, setFileContent,doneStatus,setDoneStatus,progressStatus,setProgressStatus }) {
 
 
 
-    FileSystem.getInfoAsync(savedStateFilePath)
-      .then((fileInfo) => {
-        if (!fileInfo.exists) {
-          const initialData = JSON.stringify({
-            doneState: Array(fileContent.length).fill(false),
-            progressState: Array(fileContent.length).fill(false),
-          });
-          return FileSystem.writeAsStringAsync(savedStateFilePath, initialData)
-            .then(() => {
-              return initialData;
-            })
-            .then((content) => {
-              const parsedData = JSON.parse(content);
-              setDoneStatus([...parsedData.doneState]);
-              setProgressStatus([...parsedData.progressState]);
-            });
-        } else {
-          FileSystem.readAsStringAsync(savedStateFilePath).then((content) => {
-
-            const parsedData = JSON.parse(content);
-            setDoneStatus([...parsedData.doneState]);
-            setProgressStatus([...parsedData.progressState]);
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setRefresh(false);
-      });
-  }, [fileContent]);
 
   useEffect(() => {
     if (fileContent.length > 0) {
-      const dataToSabe = JSON.stringify({
+      const dataToSave = JSON.stringify({
         doneState: [...doneStatus],
         progressState: [...progressStatus],
       });
 
-      FileSystem.writeAsStringAsync(savedStateFilePath, dataToSabe);
-    } else {
+      FileSystem.writeAsStringAsync(savedStateFilePath, dataToSave).then(()=> {
+        FileSystem.readAsStringAsync(savedStateFilePath).then((content)=>{
+          console.log(content,"inside second user efffect")
+        })
+      });
 
     }
   }, [doneStatus, progressStatus]);
 
   const toggleIsDone = (index) => {
     const newDoneStatus = [...doneStatus];
-
     newDoneStatus[index] = !newDoneStatus[index];
-
     setDoneStatus(newDoneStatus);
-
-    FileSystem.readAsStringAsync(ToDoItemFilePath).then((content) => {
+    FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
       const parsedData = JSON.parse(content);
       parsedData[index].isDone = !parsedData[index].isDone;
       const stringData = JSON.stringify(parsedData);
-
-      FileSystem.writeAsStringAsync(ToDoItemFilePath, stringData).then(() => {
+      FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
         setFileContent([...parsedData]);
       });
     });
@@ -98,7 +54,6 @@ const [progressStatus, setProgressStatus] = useState(
     const newProgressStatus = [...progressStatus];
     newProgressStatus[index] = !newProgressStatus[index];
     setProgressStatus(newProgressStatus);
-
   };
 
   const handleColor = (index) => {
@@ -117,7 +72,7 @@ const [progressStatus, setProgressStatus] = useState(
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <MoveToDonePile/>
+        <MoveToDonePile fileContent={fileContent} setFileContent={setFileContent} />
         {fileContent.map((toDoItem, index) => {
           return (
             <View key={index} style={styles.itemContainer}>

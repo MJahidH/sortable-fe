@@ -6,7 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import { ToDoItemFilePath } from "./ToDoItemFilePath";
+import { toDoItemFilePath, savedStateFilePath } from "./filePaths";
+import { getToDoItems, getSavedStates } from "./functions.js";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -15,41 +16,23 @@ const description = `this is my notes app`;
 
 export default function App() {
   const [toDoScreen, setToDoScreen] = useState(true);
-
   const [fileContent, setFileContent] = useState([]);
-  const filePath = ToDoItemFilePath;
+  const [doneStatus, setDoneStatus] = useState(
+    Array(fileContent.length).fill(false)
+  );
+  const [progressStatus, setProgressStatus] = useState(
+    Array(fileContent.length).fill(false)
+  );
 
   useEffect(() => {
-    FileSystem.getInfoAsync(filePath).then((fileInfo) => {
-      if (!fileInfo.exists) {
-
-        const initialData = JSON.stringify( [
-          {
-            title: "Clean my room",
-            isDone: false,
-          },
-          {
-            title: "Buy eggs",
-            isDone: false,
-          },
-        ]);
-        FileSystem.writeAsStringAsync(filePath, initialData).then(() => {
-          FileSystem.readAsStringAsync(filePath).then((content) => {
-
-            setFileContent(JSON.parse(content));
-          });
-        });
-      } else {
-
-        return FileSystem.readAsStringAsync(filePath).then((content) => {
-          setFileContent(JSON.parse(content));
-        });
-      }
-    });
+    getToDoItems(setFileContent);
   }, []);
 
-  const isToDoScreen = () => {
+  useEffect(() => {
+    getSavedStates(setDoneStatus, setProgressStatus);
+  }, [fileContent]);
 
+  const isToDoScreen = () => {
     setToDoScreen(!toDoScreen);
   };
 
@@ -65,6 +48,10 @@ export default function App() {
             style={styles.text}
             fileContent={fileContent}
             setFileContent={setFileContent}
+            doneStatus={doneStatus}
+            setDoneStatus={setDoneStatus}
+            progressStatus={progressStatus}
+            setProgressStatus={setProgressStatus}
           />
         </View>
       ) : (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import * as FileSystem from "expo-file-system";
-import { ToDoItemFilePath } from "../ToDoItemFilePath";
+import { toDoItemFilePath } from "../filePaths";
 
 export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
   const [newDoneItem, setNewDoneItem] = useState({
@@ -10,7 +10,7 @@ export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
   });
 
   const handleSubmit = () => {
-    const filePath = ToDoItemFilePath;
+    const filePath = toDoItemFilePath;
     FileSystem.readAsStringAsync(filePath).then((content) => {
       const parsedData = JSON.parse(content);
       parsedData.push(newDoneItem);
