@@ -6,8 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import { toDoItemFilePath, savedStateFilePath } from "./filePaths";
-import { getToDoItems, getSavedStates } from "./functions.js";
+
+import { getToDoItems, getSavedStates, getDoneItems } from "./functions.js";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,6 +23,7 @@ export default function App() {
   const [progressStatus, setProgressStatus] = useState(
     Array(fileContent.length).fill(false)
   );
+const [doneItems,setDoneItems] = useState([])
 
   useEffect(() => {
     getToDoItems(setFileContent);
@@ -30,6 +31,7 @@ export default function App() {
 
   useEffect(() => {
     getSavedStates(setDoneStatus, setProgressStatus);
+    getDoneItems(setDoneItems)
   }, [fileContent]);
 
   const isToDoScreen = () => {
@@ -55,7 +57,10 @@ export default function App() {
           />
         </View>
       ) : (
-        <DonePage style={styles.text} />
+        <DonePage 
+        style={styles.text}
+        doneItems={doneItems}
+        setDoneItems={setDoneItems} />
       )}
     </View>
   );

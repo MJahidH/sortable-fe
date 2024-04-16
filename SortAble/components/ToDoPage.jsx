@@ -29,7 +29,7 @@ export default function ToDoPage({ style, fileContent, setFileContent,doneStatus
 
       FileSystem.writeAsStringAsync(savedStateFilePath, dataToSave).then(()=> {
         FileSystem.readAsStringAsync(savedStateFilePath).then((content)=>{
-          console.log(content,"inside second user efffect")
+
         })
       });
 

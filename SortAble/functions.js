@@ -1,4 +1,4 @@
-import { toDoItemFilePath, savedStateFilePath } from "./filePaths";
+import { toDoItemFilePath, savedStateFilePath,doneItemsFilePath } from "./filePaths";
 import * as FileSystem from "expo-file-system";
 
 export function getToDoItems(setFileContent) {
@@ -57,6 +57,26 @@ export function getSavedStates (setDoneStatus,setProgressStatus) {
     .catch((err) => {
       console.log(err);
     });
+}
+
+export function getDoneItems (setDoneItems) {
+  const filePath = doneItemsFilePath;
+
+  FileSystem.getInfoAsync(filePath).then((fileInfo) => {
+    if (!fileInfo.exists) {
+      const initialData = JSON.stringify([])
+      FileSystem.writeAsStringAsync(filePath, initialData).then(() => {
+        FileSystem.readAsStringAsync(filePath).then((content) => {
+          setDoneItems(JSON.parse(content));
+        });
+      });
+    } else {
+      return FileSystem.readAsStringAsync(filePath).then((content) => {
+        setDoneItems(JSON.parse(content));
+      });
+    }
+  });
+
 }
 
 
