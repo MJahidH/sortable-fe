@@ -26,7 +26,8 @@ export default function App() {
 const [doneItems,setDoneItems] = useState([])
 
   useEffect(() => {
-    getToDoItems(setFileContent);
+    getToDoItems(setFileContent)
+    
   }, []);
 
   useEffect(() => {
@@ -50,6 +51,8 @@ const [doneItems,setDoneItems] = useState([])
             style={styles.text}
             fileContent={fileContent}
             setFileContent={setFileContent}
+            doneItems={doneItems}
+            setDoneItems={setDoneItems}
             doneStatus={doneStatus}
             setDoneStatus={setDoneStatus}
             progressStatus={progressStatus}

@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
 
-export default function DonePage({ style,doneItems,setDoneItems }) {
+export default function DonePage({ style,doneItems,setDoneItems, }) {
 
   return (
 <View>
@@ -11,7 +11,7 @@ export default function DonePage({ style,doneItems,setDoneItems }) {
   <Text style={style}>No items have been done yet </Text>
 </View>) : (
       <View>
-      <Text style={style}>No items have been done yet </Text>
+      <Text style={style}>there are itmes here  </Text>
     </View>
 )}
 

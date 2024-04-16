@@ -15,11 +15,17 @@ import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 
-export default function ToDoPage({ style, fileContent, setFileContent,doneStatus,setDoneStatus,progressStatus,setProgressStatus }) {
-
-
-
-
+export default function ToDoPage({
+  style,
+  fileContent,
+  setFileContent,
+  doneItems,
+  setDoneItems,
+  doneStatus,
+  setDoneStatus,
+  progressStatus,
+  setProgressStatus,
+}) {
   useEffect(() => {
     if (fileContent.length > 0) {
       const dataToSave = JSON.stringify({
@@ -27,25 +33,24 @@ export default function ToDoPage({ style, fileContent, setFileContent,doneStatus
         progressState: [...progressStatus],
       });
 
-      FileSystem.writeAsStringAsync(savedStateFilePath, dataToSave).then(()=> {
-        FileSystem.readAsStringAsync(savedStateFilePath).then((content)=>{
-
-        })
+      FileSystem.writeAsStringAsync(savedStateFilePath, dataToSave).then(() => {
+        FileSystem.readAsStringAsync(savedStateFilePath).then((content) => {});
       });
-
     }
   }, [doneStatus, progressStatus]);
 
   const toggleIsDone = (index) => {
     const newDoneStatus = [...doneStatus];
     newDoneStatus[index] = !newDoneStatus[index];
-    setDoneStatus(newDoneStatus);
+   
     FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
       const parsedData = JSON.parse(content);
-      parsedData[index].isDone = !parsedData[index].isDone;
+      parsedData[index].isDone = !parsedData[index].isDone 
       const stringData = JSON.stringify(parsedData);
       FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
+        setDoneStatus(newDoneStatus);
         setFileContent([...parsedData]);
+
       });
     });
   };
@@ -72,7 +77,12 @@ export default function ToDoPage({ style, fileContent, setFileContent,doneStatus
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <MoveToDonePile fileContent={fileContent} setFileContent={setFileContent} />
+        <MoveToDonePile
+          fileContent={fileContent}
+          setFileContent={setFileContent}
+          doneItems={doneItems}
+          setDoneItems={setDoneItems}
+        />
         {fileContent.map((toDoItem, index) => {
           return (
             <View key={index} style={styles.itemContainer}>
