@@ -11,6 +11,7 @@ export default function MoveToDonePile({
   doneItems,
   setDoneItems,
   setDoneStatus,
+  setProgressStatus,
 }) {
   const handlePress = () => {
     const organisedItems = {
@@ -25,26 +26,28 @@ export default function MoveToDonePile({
         organisedItems.notDone.push(item);
       }
     }
-const newDoneItems = [...doneItems,...organisedItems.readyToMove]
+    const newDoneItems = [...doneItems, ...organisedItems.readyToMove];
 
     FileSystem.writeAsStringAsync(
       toDoItemFilePath,
       JSON.stringify(organisedItems.notDone)
-    )
-      .then(() => {
-        getToDoItems(setFileContent);
-        setDoneStatus(Array(fileContent.length).fill(false));
-      })
-      .catch((err) => {
-        console.error(err);
+    ).then(() => {
+      getToDoItems(setFileContent);
+      setDoneStatus(Array(fileContent.length).fill(false));
+      const filteredContent = fileContent.filter((item) => {
+        return !item.isDone;
       });
+      const newProgressStatus = filteredContent.map((item) => {
+        return item.inProgress
+      })
+    setProgressStatus([...newProgressStatus])
+    });
 
     FileSystem.writeAsStringAsync(
       doneItemsFilePath,
       JSON.stringify(newDoneItems)
     ).then(() => {
-      getDoneItems(setDoneItems)
-      console.log("items have been moved to the done pile")
+      getDoneItems(setDoneItems);
     });
   };
 

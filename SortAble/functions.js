@@ -10,10 +10,12 @@ export function getToDoItems(setFileContent) {
         {
           title: "Clean my room",
           isDone: false,
+          inProgress : false,
         },
         {
           title: "Buy eggs",
           isDone: false,
+          inProgress : false,
         },
       ]);
       FileSystem.writeAsStringAsync(filePath, initialData).then(() => {

@@ -7,6 +7,7 @@ export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
   const [newDoneItem, setNewDoneItem] = useState({
     title: "",
     isDone: false,
+    inProgress : false,
   });
 
   const handleSubmit = () => {

@@ -50,7 +50,7 @@ export default function ToDoPage({
       FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
         setDoneStatus(newDoneStatus);
         setFileContent([...parsedData]);
-        console.log(parsedData);
+
       });
     });
   };
@@ -58,14 +58,23 @@ export default function ToDoPage({
   const toggleInProgress = (index) => {
     const newProgressStatus = [...progressStatus];
     newProgressStatus[index] = !newProgressStatus[index];
-    setProgressStatus(newProgressStatus);
+
+    FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
+      const parsedData = JSON.parse(content);
+      parsedData[index].inProgress = !parsedData[index].inProgress;
+      const stringData = JSON.stringify(parsedData);
+      FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
+        setProgressStatus(newProgressStatus);
+        setFileContent([...parsedData]);
+      });
+    });
   };
 
   const handleColor = (index) => {
-    if (progressStatus[index]) {
-      return buttonStyles.inProgress;
-    } else if (doneStatus[index]) {
+    if (doneStatus[index]) {
       return buttonStyles.isDone;
+    } else if (progressStatus[index]) {
+      return buttonStyles.inProgress;
     } else {
       return buttonStyles.notDone;
     }
