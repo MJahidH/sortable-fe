@@ -42,15 +42,15 @@ export default function ToDoPage({
   const toggleIsDone = (index) => {
     const newDoneStatus = [...doneStatus];
     newDoneStatus[index] = !newDoneStatus[index];
-   
+
     FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
       const parsedData = JSON.parse(content);
-      parsedData[index].isDone = !parsedData[index].isDone 
+      parsedData[index].isDone = !parsedData[index].isDone;
       const stringData = JSON.stringify(parsedData);
       FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
         setDoneStatus(newDoneStatus);
         setFileContent([...parsedData]);
-
+        console.log(parsedData);
       });
     });
   };
@@ -82,6 +82,10 @@ export default function ToDoPage({
           setFileContent={setFileContent}
           doneItems={doneItems}
           setDoneItems={setDoneItems}
+          doneStatus={doneStatus}
+          setDoneStatus={setDoneStatus}
+          progressStatus={progressStatus}
+          setProgressStatus={setProgressStatus}
         />
         {fileContent.map((toDoItem, index) => {
           return (
