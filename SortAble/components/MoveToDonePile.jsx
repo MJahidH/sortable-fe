@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
+import { toDoItemFilePath, doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
 import { Button } from "react-native";
 
-import { getToDoItems } from "../functions";
+import { getToDoItems, getDoneItems } from "../functions";
 
 export default function MoveToDonePile({
   fileContent,
   setFileContent,
   doneItems,
   setDoneItems,
-  doneStatus,
   setDoneStatus,
-  progressStatus,
-  setProgressStatus,
 }) {
   const handlePress = () => {
     const organisedItems = {
@@ -28,6 +25,7 @@ export default function MoveToDonePile({
         organisedItems.notDone.push(item);
       }
     }
+const newDoneItems = [...doneItems,...organisedItems.readyToMove]
 
     FileSystem.writeAsStringAsync(
       toDoItemFilePath,
@@ -35,14 +33,19 @@ export default function MoveToDonePile({
     )
       .then(() => {
         getToDoItems(setFileContent);
-        const newDoneStatus = fileContent.map((item) => {
-          return item.isDone;
-        });
         setDoneStatus(Array(fileContent.length).fill(false));
       })
       .catch((err) => {
         console.error(err);
       });
+
+    FileSystem.writeAsStringAsync(
+      doneItemsFilePath,
+      JSON.stringify(newDoneItems)
+    ).then(() => {
+      getDoneItems(setDoneItems)
+      console.log("items have been moved to the done pile")
+    });
   };
 
   return <Button title="Move To Done Pile" onPress={handlePress} />;
