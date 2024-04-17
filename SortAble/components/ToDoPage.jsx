@@ -8,12 +8,13 @@ import {
   SwitchBase,
   KeyboardAvoidingView,
   Platform,
-  PanResponder,
+  Button,
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
+import DeleteItem from "./DeleteItem";
 
 export default function ToDoPage({
   style,
@@ -50,7 +51,6 @@ export default function ToDoPage({
       FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
         setDoneStatus(newDoneStatus);
         setFileContent([...parsedData]);
-
       });
     });
   };
@@ -110,6 +110,11 @@ export default function ToDoPage({
               ></Pressable>
 
               <Text style={style}>{toDoItem.title}</Text>
+              <DeleteItem
+                id={index}
+                fileContent={fileContent}
+                setFileContent={setFileContent}
+              />
             </View>
           );
         })}
@@ -117,6 +122,8 @@ export default function ToDoPage({
           style={style}
           fileContent={fileContent}
           setFileContent={setFileContent}
+          setDoneStatus={setDoneStatus}
+          setProgressStatus={setProgressStatus}
         />
       </ScrollView>
     </KeyboardAvoidingView>
