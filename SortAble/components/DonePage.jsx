@@ -13,7 +13,9 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
         </View>
       ) : (
         <View>
-          <DeleteAllDoneItems setDoneItems={setDoneItems} />
+          <DeleteAllDoneItems 
+          setDoneItems={setDoneItems}
+          style={style} />
           {doneItems.map((item, index) => {
             return (
               <View>

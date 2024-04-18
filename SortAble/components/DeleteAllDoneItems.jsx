@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, Alert } from "react-native";
+import { View, Text, Button, Alert, Pressable } from "react-native";
 import { doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
 
-export function DeleteAllDoneItems({ setDoneItems }) {
+export function DeleteAllDoneItems({ style,setDoneItems }) {
   const deleteAllItems = () => {
+
     FileSystem.writeAsStringAsync(doneItemsFilePath, JSON.stringify([])).then(
       () => {
         setDoneItems([]);
@@ -12,7 +13,7 @@ export function DeleteAllDoneItems({ setDoneItems }) {
     );
   };
 
-  const handelPress = () => {
+  const handlePress = () => {
     Alert.alert("Delete all items", "Do you want to continue?", [
       {
         text: "cancel",
@@ -32,12 +33,20 @@ export function DeleteAllDoneItems({ setDoneItems }) {
     ]);
   };
 
+  const handleLongPress = () => {
+    deleteAllItems();
+  }
+
   return (
-    <Button
-      title="delete all "
+<Pressable
       onPress={() => {
-        handelPress();
+        handlePress();
       }}
-    />
+      onLongPress={handleLongPress}>
+        <Text
+        style={style}>delte all  </Text>
+      </Pressable>
+
+
   );
 }
