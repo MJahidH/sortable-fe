@@ -114,6 +114,8 @@ export default function ToDoPage({
                 id={index}
                 fileContent={fileContent}
                 setFileContent={setFileContent}
+                setDoneStatus={setDoneStatus}
+                setProgressStatus={setProgressStatus}
               />
             </View>
           );
