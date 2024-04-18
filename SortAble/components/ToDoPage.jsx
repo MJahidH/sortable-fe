@@ -4,6 +4,7 @@ import {
   ScrollView,
   View,
   Text,
+  TextInput,
   Pressable,
   SwitchBase,
   KeyboardAvoidingView,
@@ -27,6 +28,8 @@ export default function ToDoPage({
   progressStatus,
   setProgressStatus,
 }) {
+  const [editModeStatus, setEditModeStatus] = useState([]);
+
   useEffect(() => {
     if (fileContent.length > 0) {
       const dataToSave = JSON.stringify({
@@ -80,6 +83,18 @@ export default function ToDoPage({
     }
   };
 
+  const handleEditModePress = (index) => {
+    const newEditModeStatus = editModeStatus.length
+      ? [...editModeStatus]
+      : Array(fileContent.length).fill(false);
+
+    newEditModeStatus[index] = !newEditModeStatus[index];
+
+    setEditModeStatus(newEditModeStatus);
+
+    console.log(newEditModeStatus);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -109,7 +124,26 @@ export default function ToDoPage({
                 }}
               ></Pressable>
 
-              <Text style={style}>{toDoItem.title}</Text>
+              <Pressable
+                onPress={() => {
+                  handleEditModePress(index);
+                }}
+
+              >
+                {editModeStatus[index] ? (
+                  <TextInput
+                  style={style}
+                  value={toDoItem.title}
+                  onEndEditing={() => {
+                    handleEditModePress(index)
+                  }}
+                  autoFocus={true}
+                  ></TextInput>
+                ) : (
+                  <Text style={style}>{toDoItem.title}</Text>
+                )}
+              </Pressable>
+
               <DeleteItem
                 id={index}
                 fileContent={fileContent}
