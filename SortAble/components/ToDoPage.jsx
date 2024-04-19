@@ -30,6 +30,18 @@ export default function ToDoPage({
 }) {
   const [editModeStatus, setEditModeStatus] = useState([]);
 
+  const [newTitle, setTitle] = useState("");
+
+  const [itemTitles, setItemTitles] = useState([]);
+
+  useEffect(() => {
+    setItemTitles(
+      fileContent.map((item) => {
+        return item.title;
+      })
+    );
+  }, [fileContent]);
+
   useEffect(() => {
     if (fileContent.length > 0) {
       const dataToSave = JSON.stringify({
@@ -95,6 +107,16 @@ export default function ToDoPage({
     console.log(newEditModeStatus);
   };
 
+  const handleEditChangeText = (event, index) => {
+    const newItemTitles = itemTitles;
+    newItemTitles[index] = event;
+    setItemTitles([...newItemTitles]);
+  };
+
+  const handleEditSubmit = () => {
+    console.log("hello ");
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -128,16 +150,20 @@ export default function ToDoPage({
                 onPress={() => {
                   handleEditModePress(index);
                 }}
-
               >
                 {editModeStatus[index] ? (
                   <TextInput
-                  style={style}
-                  value={toDoItem.title}
-                  onEndEditing={() => {
-                    handleEditModePress(index)
-                  }}
-                  autoFocus={true}
+                    style={style}
+                    value={itemTitles[index]}
+                    keyboardAppearance="dark"
+                    onChangeText={(text) => {
+                      handleEditChangeText(text, index);
+                    }}
+                    onEndEditing={() => {
+                      handleEditModePress(index);
+                    }}
+                    autoFocus={true}
+                    onSubmitEditing={handleEditSubmit}
                   ></TextInput>
                 ) : (
                   <Text style={style}>{toDoItem.title}</Text>
