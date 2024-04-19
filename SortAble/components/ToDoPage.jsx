@@ -153,6 +153,7 @@ export default function ToDoPage({
                 onPress={() => {
                   handleEditModePress(index);
                 }}
+                style={styles.textPressable}
               >
                 {editModeStatus[index] ? (
                   <TextInput
@@ -228,6 +229,11 @@ const buttonStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 20,
+    paddingHorizontal :20,
+    flexWrap : "wrap"
+  },
+  textPressable : {
+    flex : 1
   },
   itemContainer: {
     flexDirection: "row",
