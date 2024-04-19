@@ -16,6 +16,7 @@ import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 import DeleteItem from "./DeleteItem";
+import { updateToDoItemTitle } from "../functions";
 
 export default function ToDoPage({
   style,
@@ -112,12 +113,7 @@ export default function ToDoPage({
   };
 
   const handleEditSubmit = (index) => {
-    const newFileContent = [...fileContent];
-    newFileContent[index].title = itemTitles[index];
-    FileSystem.writeAsStringAsync(
-      toDoItemFilePath,
-      JSON.stringify(newFileContent)
-    );
+    updateToDoItemTitle(fileContent, itemTitles, index);
   };
 
   return (
@@ -157,7 +153,7 @@ export default function ToDoPage({
               >
                 {editModeStatus[index] ? (
                   <TextInput
-                    style={style}
+                    style={[style, styles.textInputStyle]}
                     value={itemTitles[index]}
                     keyboardAppearance="dark"
                     onChangeText={(text) => {
@@ -229,11 +225,14 @@ const buttonStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 20,
-    paddingHorizontal :20,
-    flexWrap : "wrap"
+    paddingHorizontal: 20,
+    flexWrap: "wrap",
   },
-  textPressable : {
-    flex : 1
+  textPressable: {
+    flex: 1,
+  },
+  textInputStyle: {
+    flexShrink: 1,
   },
   itemContainer: {
     flexDirection: "row",

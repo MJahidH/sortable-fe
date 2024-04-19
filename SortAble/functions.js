@@ -106,3 +106,12 @@ export function updateStates(fileContent, setDoneStatus, setProgressStatus) {
     setProgressStatus([...newProgressStatus]);
   });
 }
+
+export function updateToDoItemTitle(fileContent, itemTitles, index) {
+  const newFileContent = [...fileContent];
+  newFileContent[index].title = itemTitles[index];
+  FileSystem.writeAsStringAsync(
+    toDoItemFilePath,
+    JSON.stringify(newFileContent)
+  );
+}
