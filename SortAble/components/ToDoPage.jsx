@@ -103,8 +103,6 @@ export default function ToDoPage({
     newEditModeStatus[index] = !newEditModeStatus[index];
 
     setEditModeStatus(newEditModeStatus);
-
-    console.log(newEditModeStatus);
   };
 
   const handleEditChangeText = (event, index) => {
@@ -113,8 +111,13 @@ export default function ToDoPage({
     setItemTitles([...newItemTitles]);
   };
 
-  const handleEditSubmit = () => {
-    console.log("hello ");
+  const handleEditSubmit = (index) => {
+    const newFileContent = [...fileContent];
+    newFileContent[index].title = itemTitles[index];
+    FileSystem.writeAsStringAsync(
+      toDoItemFilePath,
+      JSON.stringify(newFileContent)
+    );
   };
 
   return (
@@ -163,7 +166,9 @@ export default function ToDoPage({
                       handleEditModePress(index);
                     }}
                     autoFocus={true}
-                    onSubmitEditing={handleEditSubmit}
+                    onSubmitEditing={() => {
+                      handleEditSubmit(index);
+                    }}
                   ></TextInput>
                 ) : (
                   <Text style={style}>{toDoItem.title}</Text>
