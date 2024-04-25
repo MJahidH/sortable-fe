@@ -82,19 +82,11 @@ export function getDoneItems(setDoneItems) {
 
 export function updateStates(fileContent, setDoneStatus, setProgressStatus) {
   const newDoneStatus = fileContent.map((item) => {
-    if (item.isDone) {
-      return true;
-    } else {
-      return false;
-    }
+    return item.isDone;
   });
 
   const newProgressStatus = fileContent.map((item) => {
-    if (item.inProgress) {
-      return true;
-    } else {
-      return false;
-    }
+    return item.inProgress;
   });
 
   const newData = JSON.stringify({

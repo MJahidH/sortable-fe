@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Button,
+  Animated,
 } from "react-native";
 import AddNewToDoItem from "./AddNewToDoItem";
 import * as FileSystem from "expo-file-system";
@@ -17,6 +18,11 @@ import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 import DeleteItem from "./DeleteItem";
 import { updateToDoItemTitle } from "../functions";
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+  State,
+} from "react-native-gesture-handler";
 
 export default function ToDoPage({
   style,
@@ -31,9 +37,10 @@ export default function ToDoPage({
 }) {
   const [editModeStatus, setEditModeStatus] = useState([]);
 
-  const [newTitle, setTitle] = useState("");
-
   const [itemTitles, setItemTitles] = useState([]);
+
+  const translateX = useRef(new Animated.Value(9)).current;
+  const [itemBackgroundColor, setItemBackgroundColor] = useState(`black`);
 
   useEffect(() => {
     setItemTitles(
@@ -116,6 +123,29 @@ export default function ToDoPage({
     updateToDoItemTitle(fileContent, itemTitles, index);
   };
 
+  const onGestureEvent = Animated.event(
+    [{ nativeEvent: { translationX: translateX } }],
+    { useNativeDriver: false }
+  );
+
+  const onHandleStateChange = (event) => {
+    const { translationX, state } = event.nativeEvent;
+
+    if (state === State.END) {
+      setItemBackgroundColor(translationX > 0 ? `green` : `red`);
+      Animated.spring(translateX, {
+        toValue: 0,
+        useNativeDriver: true,
+        stiffness: 500, // Increased stiffness
+        damping: 490,
+      }).start(() => {
+        setTimeout(() => {
+          setItemBackgroundColor(`black`);
+        }, 500);
+      });
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -145,32 +175,49 @@ export default function ToDoPage({
                 }}
               ></Pressable>
 
-              <Pressable
-                onPress={() => {
-                  handleEditModePress(index);
-                }}
-                style={styles.textPressable}
-              >
-                {editModeStatus[index] ? (
-                  <TextInput
-                    style={[style, styles.textInputStyle]}
-                    value={itemTitles[index]}
-                    keyboardAppearance="dark"
-                    onChangeText={(text) => {
-                      handleEditChangeText(text, index);
-                    }}
-                    onEndEditing={() => {
-                      handleEditModePress(index);
-                    }}
-                    autoFocus={true}
-                    onSubmitEditing={() => {
-                      handleEditSubmit(index);
-                    }}
-                  ></TextInput>
-                ) : (
-                  <Text style={style}>{toDoItem.title}</Text>
-                )}
-              </Pressable>
+              <GestureHandlerRootView style={styles.contentContainer}>
+                <PanGestureHandler
+                  onGestureEvent={onGestureEvent}
+                  onHandlerStateChange={onHandleStateChange}
+                >
+                  <Animated.View
+                    style={[
+                      styles.contentContainer,
+                      {
+                        backgroundColor: itemBackgroundColor,
+                        transform: [{ translateX }],
+                      },
+                    ]}
+                  >
+                    <Pressable
+                      onPress={() => {
+                        handleEditModePress(index);
+                      }}
+                      style={styles.textPressable}
+                    >
+                      {editModeStatus[index] ? (
+                        <TextInput
+                          style={[style, styles.textInputStyle]}
+                          value={itemTitles[index]}
+                          keyboardAppearance="dark"
+                          onChangeText={(text) => {
+                            handleEditChangeText(text, index);
+                          }}
+                          onEndEditing={() => {
+                            handleEditModePress(index);
+                          }}
+                          autoFocus={true}
+                          onSubmitEditing={() => {
+                            handleEditSubmit(index);
+                          }}
+                        ></TextInput>
+                      ) : (
+                        <Text style={style}>{toDoItem.title}</Text>
+                      )}
+                    </Pressable>
+                  </Animated.View>
+                </PanGestureHandler>
+              </GestureHandlerRootView>
 
               <DeleteItem
                 id={index}
@@ -212,6 +259,12 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: "#00FF00",
     borderWidth: 4,
   },
+
+  subContainer: {
+    padding: 30,
+    borderColor: "#FFF",
+    borderWidth: 1,
+  },
   inProgress: {
     height: 55,
     width: 55,
@@ -230,6 +283,7 @@ const styles = StyleSheet.create({
   },
   textPressable: {
     flex: 1,
+    justifyContent : "center"
   },
   textInputStyle: {
     flexShrink: 1,
@@ -237,5 +291,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
+    minHeight : 55,
+    backgroundColor: "#000",
   },
 });
