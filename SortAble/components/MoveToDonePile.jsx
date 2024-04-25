@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toDoItemFilePath, doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
-import { Button } from "react-native";
+import { Button, View } from "react-native";
 
 import { getToDoItems, getDoneItems } from "../functions";
 
@@ -38,9 +38,9 @@ export default function MoveToDonePile({
         return !item.isDone;
       });
       const newProgressStatus = filteredContent.map((item) => {
-        return item.inProgress
-      })
-    setProgressStatus([...newProgressStatus])
+        return item.inProgress;
+      });
+      setProgressStatus([...newProgressStatus]);
     });
 
     FileSystem.writeAsStringAsync(
@@ -51,5 +51,15 @@ export default function MoveToDonePile({
     });
   };
 
-  return <Button title="Move To Done Pile" onPress={handlePress} />;
+  return (
+    <View
+      style={{
+        paddingRight: 111,
+        paddingBottom : 20,
+        alignItems: `center`,
+      }}
+    >
+      <Button title="Move To Done Pile" onPress={handlePress} />
+    </View>
+  );
 }

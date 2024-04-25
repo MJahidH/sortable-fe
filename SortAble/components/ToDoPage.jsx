@@ -153,6 +153,7 @@ export default function ToDoPage({
     >
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <MoveToDonePile
+
           fileContent={fileContent}
           setFileContent={setFileContent}
           doneItems={doneItems}
@@ -164,7 +165,7 @@ export default function ToDoPage({
         />
         {fileContent.map((toDoItem, index) => {
           return (
-            <View key={index} style={styles.itemContainer}>
+            <View key={index} style={styles.toDoItemContainer}>
               <Pressable
                 style={handleColor(index)}
                 onPress={() => {
@@ -175,14 +176,14 @@ export default function ToDoPage({
                 }}
               ></Pressable>
 
-              <GestureHandlerRootView style={styles.contentContainer}>
+              <GestureHandlerRootView style={styles.itemContainer}>
                 <PanGestureHandler
                   onGestureEvent={onGestureEvent}
                   onHandlerStateChange={onHandleStateChange}
                 >
                   <Animated.View
                     style={[
-                      styles.contentContainer,
+                      styles.itemContainer,
                       {
                         backgroundColor: itemBackgroundColor,
                         transform: [{ translateX }],
@@ -280,10 +281,21 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     flexWrap: "wrap",
+    borderColor : `green`,
+
+
+  },
+  toDoItemContainer: {
+    paddingTop: 10,
+    paddingHorizontal: 20,
+
+    flexDirection : "row"
+
+
   },
   textPressable: {
     flex: 1,
-    justifyContent : "center"
+    justifyContent: "center",
   },
   textInputStyle: {
     flexShrink: 1,
@@ -291,7 +303,11 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    minHeight : 55,
+    minHeight: 55,
     backgroundColor: "#000",
+    marginLeft : 5,
+    marginRight : 5,
+    flexWrap: "wrap",
+
   },
 });
