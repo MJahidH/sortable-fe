@@ -41,6 +41,9 @@ export default function ToDoPage({
 
   const translateX = useRef(new Animated.Value(9)).current;
   const [itemBackgroundColor, setItemBackgroundColor] = useState(`black`);
+  const [itemBackgroundColor2, setItemBackgroundColor2] = useState(
+    Array(fileContent.length).fill(false)
+  );
 
   useEffect(() => {
     setItemTitles(
@@ -48,6 +51,7 @@ export default function ToDoPage({
         return item.title;
       })
     );
+    setItemBackgroundColor2(Array(fileContent.length).fill(`black`));
   }, [fileContent]);
 
   useEffect(() => {
@@ -128,8 +132,9 @@ export default function ToDoPage({
     { useNativeDriver: false }
   );
 
-  const onHandleStateChange = (event) => {
+  const onHandleStateChange = (event,index) => {
     const { translationX, state } = event.nativeEvent;
+    console.log(index);
 
     if (state === State.END) {
       setItemBackgroundColor(translationX > 0 ? `green` : `red`);
@@ -153,7 +158,6 @@ export default function ToDoPage({
     >
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <MoveToDonePile
-
           fileContent={fileContent}
           setFileContent={setFileContent}
           doneItems={doneItems}
@@ -179,7 +183,9 @@ export default function ToDoPage({
               <GestureHandlerRootView style={styles.itemContainer}>
                 <PanGestureHandler
                   onGestureEvent={onGestureEvent}
-                  onHandlerStateChange={onHandleStateChange}
+                  onHandlerStateChange={(event) => {
+                    onHandleStateChange(event,index)
+                  }}
                 >
                   <Animated.View
                     style={[
@@ -281,17 +287,13 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     flexWrap: "wrap",
-    borderColor : `green`,
-
-
+    borderColor: `green`,
   },
   toDoItemContainer: {
     paddingTop: 10,
     paddingHorizontal: 20,
 
-    flexDirection : "row"
-
-
+    flexDirection: "row",
   },
   textPressable: {
     flex: 1,
@@ -305,9 +307,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     minHeight: 55,
     backgroundColor: "#000",
-    marginLeft : 5,
-    marginRight : 5,
+    marginLeft: 5,
+    marginRight: 5,
     flexWrap: "wrap",
-
   },
 });
