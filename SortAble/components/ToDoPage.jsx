@@ -134,10 +134,14 @@ export default function ToDoPage({
 
   const onHandleStateChange = (event,index) => {
     const { translationX, state } = event.nativeEvent;
-    console.log(index);
+const newItemBackgroundColor2 = [...itemBackgroundColor2]
+newItemBackgroundColor2[index] = "black"
+console.log(newItemBackgroundColor2)
 
-    if (state === State.END) {
-      setItemBackgroundColor(translationX > 0 ? `green` : `red`);
+
+    if (state === State.END) {      // setItemBackgroundColor(translationX > 0 ? `green` : `red`);
+     translationX > 0 ? newItemBackgroundColor2[index] = "green" :  newItemBackgroundColor2[index] = "red"
+     setItemBackgroundColor2([...newItemBackgroundColor2])
       Animated.spring(translateX, {
         toValue: 0,
         useNativeDriver: true,
@@ -145,7 +149,7 @@ export default function ToDoPage({
         damping: 490,
       }).start(() => {
         setTimeout(() => {
-          setItemBackgroundColor(`black`);
+          setItemBackgroundColor2(Array(fileContent.length).fill(`black`));
         }, 500);
       });
     }
@@ -191,7 +195,7 @@ export default function ToDoPage({
                     style={[
                       styles.itemContainer,
                       {
-                        backgroundColor: itemBackgroundColor,
+                        backgroundColor: itemBackgroundColor2[index],
                         transform: [{ translateX }],
                       },
                     ]}
