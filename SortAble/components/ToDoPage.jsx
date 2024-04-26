@@ -44,6 +44,7 @@ export default function ToDoPage({
   const [itemBackgroundColor2, setItemBackgroundColor2] = useState(
     Array(fileContent.length).fill(false)
   );
+  
 
   useEffect(() => {
     setItemTitles(
@@ -127,16 +128,13 @@ export default function ToDoPage({
     updateToDoItemTitle(fileContent, itemTitles, index);
   };
 
-  const onGestureEvent = Animated.event(
-    [{ nativeEvent: { translationX: translateX } }],
-    { useNativeDriver: false }
-  );
+
 
   const onHandleStateChange = (event,index) => {
     const { translationX, state } = event.nativeEvent;
 const newItemBackgroundColor2 = [...itemBackgroundColor2]
 newItemBackgroundColor2[index] = "black"
-console.log(newItemBackgroundColor2)
+
 
 
     if (state === State.END) {      // setItemBackgroundColor(translationX > 0 ? `green` : `red`);
@@ -145,8 +143,7 @@ console.log(newItemBackgroundColor2)
       Animated.spring(translateX, {
         toValue: 0,
         useNativeDriver: true,
-        stiffness: 500, // Increased stiffness
-        damping: 490,
+
       }).start(() => {
         setTimeout(() => {
           setItemBackgroundColor2(Array(fileContent.length).fill(`black`));
@@ -186,7 +183,7 @@ console.log(newItemBackgroundColor2)
 
               <GestureHandlerRootView style={styles.itemContainer}>
                 <PanGestureHandler
-                  onGestureEvent={onGestureEvent}
+
                   onHandlerStateChange={(event) => {
                     onHandleStateChange(event,index)
                   }}
