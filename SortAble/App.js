@@ -6,8 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-
-import { getToDoItems, getSavedStates, getDoneItems } from "./functions.js";
+import { getToDoItems, getSavedStates, getDoneItems } from "./all-functions/get-functions";
 
 const Tab = createMaterialTopTabNavigator();
 

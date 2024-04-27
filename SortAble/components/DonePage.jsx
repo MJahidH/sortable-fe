@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button } from "react-native";
-import { doneItemsFilePath } from "../filePaths";
-import * as FileSystem from "expo-file-system";
 import { DeleteAllDoneItems } from "./DeleteAllDoneItems";
 
 export default function DonePage({ style, doneItems, setDoneItems }) {
@@ -13,9 +11,7 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
         </View>
       ) : (
         <View>
-          <DeleteAllDoneItems 
-          setDoneItems={setDoneItems}
-          style={style} />
+          <DeleteAllDoneItems setDoneItems={setDoneItems} style={style} />
           {doneItems.map((item, index) => {
             return (
               <View>

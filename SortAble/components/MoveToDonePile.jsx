@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toDoItemFilePath, doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
 import { Button, View } from "react-native";
-
-import { getToDoItems, getDoneItems } from "../functions";
+import { getToDoItems, getDoneItems } from "../all-functions/get-functions";
 
 export default function MoveToDonePile({
   fileContent,
@@ -55,7 +54,7 @@ export default function MoveToDonePile({
     <View
       style={{
         paddingRight: 111,
-        paddingBottom : 20,
+        paddingBottom: 20,
         alignItems: `center`,
       }}
     >

@@ -129,7 +129,6 @@ export default function ToDoPage({
   };
 
 
-
   const onHandleStateChange = (event,index) => {
     const { translationX, state } = event.nativeEvent;
 const newItemBackgroundColor2 = [...itemBackgroundColor2]
