@@ -21,6 +21,7 @@ export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
       setNewDoneItem({
         title: "",
         isDone: false,
+        inProgress: false,
       });
     });
   };

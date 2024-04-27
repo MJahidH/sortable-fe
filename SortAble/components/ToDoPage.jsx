@@ -17,7 +17,10 @@ import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 import DeleteItem from "./DeleteItem";
-import { updateToDoItemTitle } from "../all-functions/update-functions";
+import {
+  updateToDoItemTitle,
+  updateStateByIndex,
+} from "../all-functions/update-functions";
 import {
   GestureHandlerRootView,
   PanGestureHandler,
@@ -44,7 +47,6 @@ export default function ToDoPage({
   const [itemBackgroundColor2, setItemBackgroundColor2] = useState(
     Array(fileContent.length).fill(false)
   );
-  
 
   useEffect(() => {
     setItemTitles(
@@ -69,33 +71,11 @@ export default function ToDoPage({
   }, [doneStatus, progressStatus]);
 
   const toggleIsDone = (index) => {
-    const newDoneStatus = [...doneStatus];
-    newDoneStatus[index] = !newDoneStatus[index];
-
-    FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
-      const parsedData = JSON.parse(content);
-      parsedData[index].isDone = !parsedData[index].isDone;
-      const stringData = JSON.stringify(parsedData);
-      FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
-        setDoneStatus(newDoneStatus);
-        setFileContent([...parsedData]);
-      });
-    });
+    updateStateByIndex(index, setDoneStatus, doneStatus, setFileContent);
   };
 
   const toggleInProgress = (index) => {
-    const newProgressStatus = [...progressStatus];
-    newProgressStatus[index] = !newProgressStatus[index];
-
-    FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
-      const parsedData = JSON.parse(content);
-      parsedData[index].inProgress = !parsedData[index].inProgress;
-      const stringData = JSON.stringify(parsedData);
-      FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
-        setProgressStatus(newProgressStatus);
-        setFileContent([...parsedData]);
-      });
-    });
+    updateStateByIndex(index,setProgressStatus,progressStatus,setFileContent );
   };
 
   const handleColor = (index) => {
@@ -128,21 +108,20 @@ export default function ToDoPage({
     updateToDoItemTitle(fileContent, itemTitles, index);
   };
 
-
-  const onHandleStateChange = (event,index) => {
+  const onHandleStateChange = (event, index) => {
     const { translationX, state } = event.nativeEvent;
-const newItemBackgroundColor2 = [...itemBackgroundColor2]
-newItemBackgroundColor2[index] = "black"
+    const newItemBackgroundColor2 = [...itemBackgroundColor2];
+    newItemBackgroundColor2[index] = "black";
 
-
-
-    if (state === State.END) {      // setItemBackgroundColor(translationX > 0 ? `green` : `red`);
-     translationX > 0 ? newItemBackgroundColor2[index] = "green" :  newItemBackgroundColor2[index] = "red"
-     setItemBackgroundColor2([...newItemBackgroundColor2])
+    if (state === State.END) {
+      // setItemBackgroundColor(translationX > 0 ? `green` : `red`);
+      translationX > 0
+        ? (newItemBackgroundColor2[index] = "green")
+        : (newItemBackgroundColor2[index] = "red");
+      setItemBackgroundColor2([...newItemBackgroundColor2]);
       Animated.spring(translateX, {
         toValue: 0,
         useNativeDriver: true,
-
       }).start(() => {
         setTimeout(() => {
           setItemBackgroundColor2(Array(fileContent.length).fill(`black`));
@@ -182,9 +161,8 @@ newItemBackgroundColor2[index] = "black"
 
               <GestureHandlerRootView style={styles.itemContainer}>
                 <PanGestureHandler
-
                   onHandlerStateChange={(event) => {
-                    onHandleStateChange(event,index)
+                    onHandleStateChange(event, index);
                   }}
                 >
                   <Animated.View
