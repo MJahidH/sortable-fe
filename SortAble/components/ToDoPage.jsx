@@ -19,7 +19,8 @@ import MoveToDonePile from "./MoveToDonePile";
 import DeleteItem from "./DeleteItem";
 import {
   updateToDoItemTitle,
-  updateStateByIndex,
+  updateProgressStateByIndex,
+  updateDoneStateByIndex
 } from "../all-functions/update-functions";
 import {
   GestureHandlerRootView,
@@ -71,11 +72,11 @@ export default function ToDoPage({
   }, [doneStatus, progressStatus]);
 
   const toggleIsDone = (index) => {
-    updateStateByIndex(index, setDoneStatus, doneStatus, setFileContent);
+    updateDoneStateByIndex(index, setDoneStatus, doneStatus, setFileContent);
   };
 
   const toggleInProgress = (index) => {
-    updateStateByIndex(index,setProgressStatus,progressStatus,setFileContent );
+    updateProgressStateByIndex(index,setProgressStatus,progressStatus,setFileContent );
   };
 
   const handleColor = (index) => {
@@ -115,10 +116,19 @@ export default function ToDoPage({
 
     if (state === State.END) {
       // setItemBackgroundColor(translationX > 0 ? `green` : `red`);
-      translationX > 0
-        ? (newItemBackgroundColor2[index] = "green")
-        : (newItemBackgroundColor2[index] = "red");
-      setItemBackgroundColor2([...newItemBackgroundColor2]);
+      if (translationX > 0) {
+        (newItemBackgroundColor2[index] = "green")
+        setItemBackgroundColor2([...newItemBackgroundColor2]);
+        setTimeout(() => {
+          updateDoneStateByIndex(index, setDoneStatus, doneStatus, setFileContent);
+        },200)
+      } else {
+        (newItemBackgroundColor2[index] = "red");
+        setItemBackgroundColor2([...newItemBackgroundColor2]);
+      }
+        
+        
+      
       Animated.spring(translateX, {
         toValue: 0,
         useNativeDriver: true,
