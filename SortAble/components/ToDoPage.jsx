@@ -17,7 +17,7 @@ import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import MoveToDonePile from "./MoveToDonePile";
 import DeleteItem from "./DeleteItem";
-import { updateToDoItemTitle } from "../functions";
+import { updateToDoItemTitle } from "../all-functions/update-functions";
 import {
   GestureHandlerRootView,
   PanGestureHandler,

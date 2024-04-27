@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
-import { updateStates } from "../functions";
+import { updateStates } from "../all-functions/update-functions";
 
 export default function DeleteItem({
   id,
