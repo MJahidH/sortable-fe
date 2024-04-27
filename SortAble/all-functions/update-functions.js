@@ -63,10 +63,10 @@ export function updateProgressStateByIndex (index,setProgressStatus,progressStat
 
 FileSystem.readAsStringAsync(toDoItemFilePath).then((content) => {
 const parsedData = JSON.parse(content);
-parsedData[index].isDone = !parsedData[index].inProgress;
+parsedData[index].inProgress = !parsedData[index].inProgress;
 const stringData = JSON.stringify(parsedData);
 FileSystem.writeAsStringAsync(toDoItemFilePath, stringData).then(() => {
-  setProgressStatus(newProgressStatus);
+  setProgressStatus([...newProgressStatus]);
   setFileContent([...parsedData]);
 });
 });

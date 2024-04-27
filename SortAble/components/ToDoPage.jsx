@@ -27,6 +27,7 @@ import {
   PanGestureHandler,
   State,
 } from "react-native-gesture-handler";
+import {updateStates} from "../all-functions/update-functions"
 
 export default function ToDoPage({
   style,
@@ -125,6 +126,22 @@ export default function ToDoPage({
       } else {
         (newItemBackgroundColor2[index] = "red");
         setItemBackgroundColor2([...newItemBackgroundColor2]);
+        setTimeout(() => {
+          const newFileContent = fileContent.filter((item, id) => {
+            return id !== index;
+          });
+          FileSystem.writeAsStringAsync(
+            toDoItemFilePath,
+            JSON.stringify(newFileContent)
+          ).then(() => {
+            setFileContent([...newFileContent]);
+            updateStates(newFileContent, setDoneStatus, setProgressStatus);
+          }).catch((err) => {
+              console.log(err)
+          })
+    
+
+        },500)
       }
         
         
