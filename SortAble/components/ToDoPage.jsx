@@ -30,6 +30,7 @@ import {
   State,
 } from "react-native-gesture-handler";
 import { updateStates } from "../all-functions/update-functions";
+import * as Speech from "expo-speech"
 
 export default function ToDoPage({
   style,
@@ -166,6 +167,19 @@ export default function ToDoPage({
     }
   };
 
+
+  const textToSpeech = (text) => {
+    Speech.stop()
+    Speech.speak(text,{
+      language : `en-UK`,
+      rate : 1.1,
+      pitch : 1.2
+    })
+  }
+
+
+
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -187,7 +201,7 @@ export default function ToDoPage({
             .numberOfTaps(2)
             .onEnd((_event, success) => {
               if (success) {
-                console.log(`double tap has happened ${index}`);
+                textToSpeech(toDoItem.title)
               }
             });
 
