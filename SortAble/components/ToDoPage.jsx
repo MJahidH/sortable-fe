@@ -166,8 +166,6 @@ export default function ToDoPage({
     }
   };
 
-  
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -186,18 +184,16 @@ export default function ToDoPage({
         />
         {fileContent.map((toDoItem, index) => {
           const doubleTap = Gesture.Tap()
-          .numberOfTaps(2)
-          .onEnd((_event, success) => {
-            if (success) {
-              console.log(`double tap has happened ${index}`);
-            }
+            .numberOfTaps(2)
+            .onEnd((_event, success) => {
+              if (success) {
+                console.log(`double tap has happened ${index}`);
+              }
+            });
+
+          const singleTap = Gesture.Tap().onEnd((_event, success) => {
+            if (success) handleEditModePress(index);
           });
-      
-        const singleTap = Gesture.Tap().onEnd((_event, success) => {
-          if (success) {
-            console.log(`single tap has happened ${index}`);
-          }
-        });
           return (
             <View key={index} style={styles.toDoItemContainer}>
               <Pressable
@@ -211,7 +207,9 @@ export default function ToDoPage({
               ></Pressable>
 
               <GestureHandlerRootView style={styles.itemContainer}>
-                <GestureDetector gesture={Gesture.Exclusive(doubleTap,singleTap)}>
+                <GestureDetector
+                  gesture={Gesture.Exclusive(doubleTap, singleTap)}
+                >
                   <PanGestureHandler
                     onHandlerStateChange={(event) => {
                       onHandleStateChange(event, index);
@@ -226,9 +224,7 @@ export default function ToDoPage({
                         },
                       ]}
                     >
-                      <Pressable
-                        // onPress={() => {
-                        //   handleEditModePress(index);
+                      <View
                         // }}
                         style={styles.textPressable}
                       >
@@ -251,7 +247,7 @@ export default function ToDoPage({
                         ) : (
                           <Text style={style}>{toDoItem.title}</Text>
                         )}
-                      </Pressable>
+                      </View>
                     </Animated.View>
                   </PanGestureHandler>
                 </GestureDetector>
