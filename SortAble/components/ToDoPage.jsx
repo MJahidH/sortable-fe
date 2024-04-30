@@ -196,7 +196,9 @@ export default function ToDoPage({
           progressStatus={progressStatus}
           setProgressStatus={setProgressStatus}
         />
-        {fileContent.map((toDoItem, index) => {
+<View
+style={{paddingTop: 30,marginRight : 40}}>
+{fileContent.map((toDoItem, index) => {
           const doubleTap = Gesture.Tap()
             .numberOfTaps(2)
             .onEnd((_event, success) => {
@@ -246,6 +248,7 @@ export default function ToDoPage({
                           <TextInput
                             style={[style, styles.textInputStyle]}
                             value={itemTitles[index]}
+
                             keyboardAppearance="dark"
                             onChangeText={(text) => {
                               handleEditChangeText(text, index);
@@ -257,6 +260,7 @@ export default function ToDoPage({
                             onSubmitEditing={() => {
                               handleEditSubmit(index);
                             }}
+
                           ></TextInput>
                         ) : (
                           <Text style={style}>{toDoItem.title}</Text>
@@ -267,16 +271,11 @@ export default function ToDoPage({
                 </GestureDetector>
               </GestureHandlerRootView>
 
-              <DeleteItem
-                id={index}
-                fileContent={fileContent}
-                setFileContent={setFileContent}
-                setDoneStatus={setDoneStatus}
-                setProgressStatus={setProgressStatus}
-              />
             </View>
           );
         })}
+
+</View>
         <AddNewToDoItem
           style={style}
           fileContent={fileContent}
@@ -331,17 +330,25 @@ const styles = StyleSheet.create({
     borderColor: `green`,
   },
   toDoItemContainer: {
-    paddingTop: 10,
     paddingHorizontal: 20,
-
     flexDirection: "row",
+    // borderColor :  "#FFA500",
+    // borderWidth : 5,
   },
   textPressable: {
     flex: 1,
     justifyContent: "center",
+    marginRight : 30,
+    marginTop : 10,
+    marginLeft : 10
   },
   textInputStyle: {
-    flexShrink: 1,
+
+    justifyContent: "center",
+    borderColor :  "#FFA500",
+    borderWidth : 5,
+    marginRight : 30,
+    flexWrap : `wrap`
   },
   itemContainer: {
     flexDirection: "row",

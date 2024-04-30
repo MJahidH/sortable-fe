@@ -53,9 +53,10 @@ export default function MoveToDonePile({
   return (
     <View
       style={{
-        paddingRight: 111,
-        paddingBottom: 20,
-        alignItems: `center`,
+        position: "absolute",
+        alignSelf: "center",
+
+
       }}
     >
       <Button title="Move To Done Pile" onPress={handlePress} />
