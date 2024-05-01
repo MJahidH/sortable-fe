@@ -3,6 +3,7 @@ import { ScrollView,View, Text, Button, Pressable } from "react-native";
 import { DeleteAllDoneItems } from "./DeleteAllDoneItems";
 import {styles} from "../styleSheets"
 
+
 export default function DonePage({ style, doneItems, setDoneItems }) {
   return (
     <View>

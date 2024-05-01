@@ -4,6 +4,7 @@ import * as FileSystem from "expo-file-system";
 import { toDoItemFilePath, savedStateFilePath } from "../filePaths";
 import { updateStates } from "../all-functions/update-functions";
 
+
 export default function DeleteItem({
   id,
   fileContent,
