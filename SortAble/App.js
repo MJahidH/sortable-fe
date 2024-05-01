@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: `#FFF`,
+    fontSize : 17
   },
   button: {
     // To create a circle, you need to make sure the height and width are equal

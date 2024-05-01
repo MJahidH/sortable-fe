@@ -35,7 +35,7 @@ export default function AddNewToDoItem({ style, fileContent, setFileContent }) {
 
   return (
     <View>
-      <Text style={style}>this is the add new item </Text>
+
       <TextInput
         style={[style, styles.textInputcontainer]}
         keyboardAppearance="dark"
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     borderColor: "#FFFF00",
     borderWidth: 1,
     padding: 10,
-    margin: 10,
+    marginRight: 60,
+    borderRadius : 50
   },
 });

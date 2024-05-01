@@ -289,8 +289,8 @@ style={{paddingTop: 30,marginRight : 40}}>
 }
 const buttonStyles = StyleSheet.create({
   notDone: {
-    height: 55,
-    width: 55,
+    height: 40,
+    width: 40,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "transparent",
@@ -298,8 +298,8 @@ const buttonStyles = StyleSheet.create({
     borderWidth: 4,
   },
   isDone: {
-    height: 55,
-    width: 55,
+    height: 40,
+    width: 40,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "",
@@ -313,8 +313,8 @@ const buttonStyles = StyleSheet.create({
     borderWidth: 1,
   },
   inProgress: {
-    height: 55,
-    width: 55,
+    height: 40,
+    width: 40,
     padding: 10,
     borderRadius: 50,
     backgroundColor: "",
@@ -332,15 +332,15 @@ const styles = StyleSheet.create({
   toDoItemContainer: {
     paddingHorizontal: 20,
     flexDirection: "row",
-    // borderColor :  "#FFA500",
-    // borderWidth : 5,
+    marginBottom : 5
+
   },
   textPressable: {
     flex: 1,
     justifyContent: "center",
     marginRight : 30,
     marginTop : 10,
-    marginLeft : 10
+    marginLeft : 4
   },
   textInputStyle: {
 
