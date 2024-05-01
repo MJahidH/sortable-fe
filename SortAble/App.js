@@ -6,7 +6,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import DonePage from "./components/DonePage";
 import { useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
-import { getToDoItems, getSavedStates, getDoneItems } from "./all-functions/get-functions";
+import {
+  getToDoItems,
+  getSavedStates,
+  getDoneItems,
+} from "./all-functions/get-functions";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -22,16 +26,15 @@ export default function App() {
   const [progressStatus, setProgressStatus] = useState(
     Array(fileContent.length).fill(false)
   );
-const [doneItems,setDoneItems] = useState([])
+  const [doneItems, setDoneItems] = useState([]);
 
   useEffect(() => {
-    getToDoItems(setFileContent)
-    
+    getToDoItems(setFileContent);
   }, []);
 
   useEffect(() => {
     getSavedStates(setDoneStatus, setProgressStatus);
-    getDoneItems(setDoneItems)
+    getDoneItems(setDoneItems);
   }, [fileContent]);
 
   const isToDoScreen = () => {
@@ -59,10 +62,13 @@ const [doneItems,setDoneItems] = useState([])
           />
         </View>
       ) : (
-        <DonePage 
-        style={styles.text}
-        doneItems={doneItems}
-        setDoneItems={setDoneItems} />
+        <View style={styles.parentDiv}>
+          <DonePage
+            style={styles.text}
+            doneItems={doneItems}
+            setDoneItems={setDoneItems}
+          />
+        </View>
       )}
     </View>
   );
@@ -83,7 +89,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: `#FFF`,
-    fontSize : 17
+    fontSize: 17,
   },
   button: {
     // To create a circle, you need to make sure the height and width are equal

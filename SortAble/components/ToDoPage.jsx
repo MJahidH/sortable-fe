@@ -30,7 +30,8 @@ import {
   State,
 } from "react-native-gesture-handler";
 import { updateStates } from "../all-functions/update-functions";
-import * as Speech from "expo-speech"
+import * as Speech from "expo-speech";
+import { styles } from "../styleSheets";
 
 export default function ToDoPage({
   style,
@@ -167,18 +168,14 @@ export default function ToDoPage({
     }
   };
 
-
   const textToSpeech = (text) => {
-    Speech.stop()
-    Speech.speak(text,{
-      language : `en-UK`,
-      rate : 1.1,
-      pitch : 1.2
-    })
-  }
-
-
-
+    Speech.stop();
+    Speech.speak(text, {
+      language: `en-UK`,
+      rate: 1.1,
+      pitch: 1.2,
+    });
+  };
 
   return (
     <KeyboardAvoidingView
@@ -196,86 +193,81 @@ export default function ToDoPage({
           progressStatus={progressStatus}
           setProgressStatus={setProgressStatus}
         />
-<View
-style={{paddingTop: 40,marginRight : 40,marginTop : 20}}>
-{fileContent.map((toDoItem, index) => {
-          const doubleTap = Gesture.Tap()
-            .numberOfTaps(2)
-            .onEnd((_event, success) => {
-              if (success) {
-                textToSpeech(toDoItem.title)
-              }
+        <View style={styles.mappedContainers}>
+          {fileContent.map((toDoItem, index) => {
+            const doubleTap = Gesture.Tap()
+              .numberOfTaps(2)
+              .onEnd((_event, success) => {
+                if (success) {
+                  textToSpeech(toDoItem.title);
+                }
+              });
+
+            const singleTap = Gesture.Tap().onEnd((_event, success) => {
+              if (success) handleEditModePress(index);
             });
+            return (
+              <View key={index} style={styles.toDoItemContainer}>
+                <Pressable
+                  style={handleColor(index)}
+                  onPress={() => {
+                    toggleIsDone(index);
+                  }}
+                  onLongPress={() => {
+                    toggleInProgress(index);
+                  }}
+                ></Pressable>
 
-          const singleTap = Gesture.Tap().onEnd((_event, success) => {
-            if (success) handleEditModePress(index);
-          });
-          return (
-            <View key={index} style={styles.toDoItemContainer}>
-              <Pressable
-                style={handleColor(index)}
-                onPress={() => {
-                  toggleIsDone(index);
-                }}
-                onLongPress={() => {
-                  toggleInProgress(index);
-                }}
-              ></Pressable>
-
-              <GestureHandlerRootView style={styles.itemContainer}>
-                <GestureDetector
-                  gesture={Gesture.Exclusive(doubleTap, singleTap)}
-                >
-                  <PanGestureHandler
-                    onHandlerStateChange={(event) => {
-                      onHandleStateChange(event, index);
-                    }}
+                <GestureHandlerRootView style={styles.itemContainer}>
+                  <GestureDetector
+                    gesture={Gesture.Exclusive(doubleTap, singleTap)}
                   >
-                    <Animated.View
-                      style={[
-                        styles.itemContainer,
-                        {
-                          backgroundColor: itemBackgroundColor2[index],
-                          transform: [{ translateX }],
-                        },
-                      ]}
+                    <PanGestureHandler
+                      onHandlerStateChange={(event) => {
+                        onHandleStateChange(event, index);
+                      }}
                     >
-                      <View
-                        // }}
-                        style={styles.textPressable}
+                      <Animated.View
+                        style={[
+                          styles.itemContainer,
+                          {
+                            backgroundColor: itemBackgroundColor2[index],
+                            transform: [{ translateX }],
+                          },
+                        ]}
                       >
-                        {editModeStatus[index] ? (
-                          <TextInput
-                            style={[style, styles.textInputStyle]}
-                            value={itemTitles[index]}
-
-                            keyboardAppearance="dark"
-                            onChangeText={(text) => {
-                              handleEditChangeText(text, index);
-                            }}
-                            onEndEditing={() => {
-                              handleEditModePress(index);
-                            }}
-                            autoFocus={true}
-                            onSubmitEditing={() => {
-                              handleEditSubmit(index);
-                            }}
-
-                          ></TextInput>
-                        ) : (
-                          <Text style={style}>{toDoItem.title}</Text>
-                        )}
-                      </View>
-                    </Animated.View>
-                  </PanGestureHandler>
-                </GestureDetector>
-              </GestureHandlerRootView>
-
-            </View>
-          );
-        })}
-
-</View>
+                        <View
+                          // }}
+                          style={styles.textPressable}
+                        >
+                          {editModeStatus[index] ? (
+                            <TextInput
+                              style={[style, styles.textInputStyle]}
+                              value={itemTitles[index]}
+                              keyboardAppearance="dark"
+                              onChangeText={(text) => {
+                                handleEditChangeText(text, index);
+                              }}
+                              onEndEditing={() => {
+                                handleEditModePress(index);
+                              }}
+                              autoFocus={true}
+                              onSubmitEditing={() => {
+                                handleEditSubmit(index);
+                              }}
+                            ></TextInput>
+                          ) : (
+                            <Text style={style}>{toDoItem.title}</Text>
+                          )}
+                        </View>
+                      </Animated.View>
+                    </PanGestureHandler>
+                  </GestureDetector>
+                </GestureHandlerRootView>
+              </View>
+            );
+          })}
+        </View>
         <AddNewToDoItem
           style={style}
           fileContent={fileContent}
@@ -320,43 +312,5 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: "",
     backgroundColor: "#FFA500",
     borderWidth: 4,
-  },
-});
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    flexWrap: "wrap",
-    borderColor: `green`,
-  },
-  toDoItemContainer: {
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    marginBottom : 5
-
-  },
-  textPressable: {
-    flex: 1,
-    justifyContent: "center",
-    marginRight : 30,
-    marginTop : 10,
-    marginLeft : 4
-  },
-  textInputStyle: {
-
-    justifyContent: "center",
-    borderColor :  "#FFA500",
-    borderWidth : 5,
-    marginRight : 30,
-    flexWrap : `wrap`
-  },
-  itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    minHeight: 55,
-    backgroundColor: "#000",
-    marginLeft: 5,
-    marginRight: 5,
-    flexWrap: "wrap",
   },
 });

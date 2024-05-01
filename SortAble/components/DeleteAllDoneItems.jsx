@@ -3,9 +3,8 @@ import { View, Text, Button, Alert, Pressable } from "react-native";
 import { doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
 
-export function DeleteAllDoneItems({ style,setDoneItems }) {
+export function DeleteAllDoneItems({ style, setDoneItems }) {
   const deleteAllItems = () => {
-
     FileSystem.writeAsStringAsync(doneItemsFilePath, JSON.stringify([])).then(
       () => {
         setDoneItems([]);
@@ -35,18 +34,24 @@ export function DeleteAllDoneItems({ style,setDoneItems }) {
 
   const handleLongPress = () => {
     deleteAllItems();
-  }
+  };
 
   return (
-<Pressable
-      onPress={() => {
-        handlePress();
+    <View
+      style={{
+        position: "absolute",
+        alignSelf: "center",
       }}
-      onLongPress={handleLongPress}>
-        <Text
-        style={style}>delte all  </Text>
+    >
+      <Pressable
+        onPress={() => {
+          handlePress();
+        }}
+        onLongPress={handleLongPress}
+        style={{padding : 20}}
+      >
+        <Text style={[style,{fontSize : 20,color : "red"}]}>Delete All </Text>
       </Pressable>
-
-
+    </View>
   );
 }
