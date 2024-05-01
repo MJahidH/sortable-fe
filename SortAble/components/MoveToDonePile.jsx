@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { toDoItemFilePath, doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
-import { Button, View } from "react-native";
+import { Button, View, Pressable, Text } from "react-native";
 import { getToDoItems, getDoneItems } from "../all-functions/get-functions";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function MoveToDonePile({
   fileContent,
@@ -13,6 +14,7 @@ export default function MoveToDonePile({
   setProgressStatus,
 }) {
   const handlePress = () => {
+
     const organisedItems = {
       notDone: [],
       readyToMove: [],
@@ -55,11 +57,30 @@ export default function MoveToDonePile({
       style={{
         position: "absolute",
         alignSelf: "center",
-
-
+        // borderColor :  "#00FF00",
+        // borderWidth : 5
       }}
     >
-      <Button title="Move To Done Pile" onPress={handlePress} />
+      {/* <Button title="Move To Done Pile" onPress={handlePress} /> */}
+
+      <Pressable
+        onPress={() => {
+          handlePress();
+        }}
+        style={{ 
+          padding: 20,
+          flexDirection: "row", }}
+      >
+        <Text style={{ 
+          color: "#00FF00",
+          fontSize : 25
+          }}> Move  </Text>
+        <Icon 
+        name="arrow-right"
+        size={30}
+        color="#00FF00"
+        />
+      </Pressable>
     </View>
   );
 }

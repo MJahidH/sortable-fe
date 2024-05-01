@@ -197,7 +197,7 @@ export default function ToDoPage({
           setProgressStatus={setProgressStatus}
         />
 <View
-style={{paddingTop: 30,marginRight : 40}}>
+style={{paddingTop: 40,marginRight : 40,marginTop : 20}}>
 {fileContent.map((toDoItem, index) => {
           const doubleTap = Gesture.Tap()
             .numberOfTaps(2)
