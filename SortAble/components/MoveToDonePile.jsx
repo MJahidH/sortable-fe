@@ -53,20 +53,16 @@ export default function MoveToDonePile({
   };
 
   return (
-    <View
+    <Pressable
       style={{
         position: "absolute",
         alignSelf: "center",
-        // borderColor :  "#00FF00",
-        // borderWidth : 5
+      }}
+      onPress={() => {
+        handlePress();
       }}
     >
-      {/* <Button title="Move To Done Pile" onPress={handlePress} /> */}
-
-      <Pressable
-        onPress={() => {
-          handlePress();
-        }}
+      <View
         style={{ 
           padding: 20,
           flexDirection: "row", }}
@@ -80,7 +76,7 @@ export default function MoveToDonePile({
         size={30}
         color="#00FF00"
         />
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 }

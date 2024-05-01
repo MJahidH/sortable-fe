@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Button, Alert, Pressable } from "react-native";
 import { doneItemsFilePath } from "../filePaths";
 import * as FileSystem from "expo-file-system";
-import Icon from "react-native-vector-icons/Ionicons"
+import Icon from "react-native-vector-icons/Ionicons";
 
 export function DeleteAllDoneItems({ style, setDoneItems }) {
   const deleteAllItems = () => {
@@ -38,27 +38,28 @@ export function DeleteAllDoneItems({ style, setDoneItems }) {
   };
 
   return (
-    <View
+    <Pressable
       style={{
         position: "absolute",
         alignSelf: "center",
-        
       }}
+      onPress={() => {
+        handlePress();
+      }}
+      onLongPress={handleLongPress}
     >
-      <Pressable
-        onPress={() => {
-          handlePress();
-        }}
-        onLongPress={handleLongPress}
-        style={{padding : 20,flexDirection : "row"}}
+      <View
+
+        style={{ padding: 20, flexDirection: "row" }}
       >
-        <Text style={[style,{fontSize : 20,color : "red"}]}>Delete All </Text>
-        <Icon 
-        name="trash-bin"
-        color="red"
-        size={25}
-        style={{paddingLeft : 5}}/>
-      </Pressable>
-    </View>
+        <Text style={[style, { fontSize: 20, color: "red" }]}>Delete All </Text>
+        <Icon
+          name="trash-bin"
+          color="red"
+          size={25}
+          style={{ paddingLeft: 5 }}
+        />
+      </View>
+    </Pressable>
   );
 }

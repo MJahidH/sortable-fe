@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import ToDoPage from "./components/ToDoPage";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import {
   getSavedStates,
   getDoneItems,
 } from "./all-functions/get-functions";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -43,9 +44,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonTrigger}>
-        <Button title="done" onPress={isToDoScreen} />
-      </View>
+      <Pressable style={styles.buttonTrigger} onPress={isToDoScreen}>
+        <View>
+          <Text style={styles.text}>Done Pile</Text>
+        </View>
+      </Pressable>
       {toDoScreen ? (
         <View style={styles.parentDiv}>
           <ToDoPage
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 20,
   },
   parentDiv: {
     flex: 1,
@@ -107,6 +111,13 @@ const styles = StyleSheet.create({
     top: StatusBar.currentHeight || 40,
     zIndex: 10,
     width: 100,
-    alignSelf: "center",
+    right: 0,
+    marginRight: 10,
+    backgroundColor: `green`,
+    padding: 10,
+    justifyContent: `center`,
+    alignItems: `center`,
+    borderRadius: 20,
+    marginTop: 20,
   },
 });
