@@ -8,8 +8,15 @@ import {
   Gesture,
 } from "react-native-gesture-handler";
 import textToSpeech from "../all-functions/text-to-speech";
+import highlightItem from "../all-functions/tts-highlight";
 
 export default function DonePage({ style, doneItems, setDoneItems }) {
+  const [ttsHighlight, setTtsHighlight] = useState([]);
+
+  useEffect(() => {
+    setTtsHighlight(Array(doneItems.length).fill(0));
+  }, [doneItems]);
+
   return (
     <View>
       {doneItems.length === 0 ? (
@@ -26,6 +33,12 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                 .onEnd((_event, success) => {
                   if (success) {
                     textToSpeech(item.title);
+                    highlightItem(
+                      index,
+                      ttsHighlight,
+                      setTtsHighlight,
+                      doneItems
+                    );
                   }
                 });
               return (
@@ -46,7 +59,17 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                   ></Pressable>
                   <GestureHandlerRootView style={styles.itemContainer}>
                     <GestureDetector gesture={Gesture.Exclusive(doubleTap)}>
-                      <View style={styles.itemContainer}>
+                      <View
+                        style={[
+                          styles.itemContainer,
+                          {
+                            borderColor: `yellow`,
+                            borderWidth: ttsHighlight[index],
+                            paddingRight: 110,
+                            borderRadius: 20,
+                          },
+                        ]}
+                      >
                         <Text
                           style={[style, { paddingTop: 10, paddingLeft: 15 }]}
                         >
