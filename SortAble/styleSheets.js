@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: "row",
     marginBottom: 5,
+    borderColor: `green`,
   },
   textPressable: {
     flex: 1,
@@ -18,6 +19,7 @@ export const styles = StyleSheet.create({
     marginRight: 30,
     marginTop: 10,
     marginLeft: 4,
+    
   },
   textInputStyle: {
     justifyContent: "center",
@@ -32,9 +34,11 @@ export const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     flexWrap: "wrap",
+
   },
-  mappedContainers: { 
-    paddingTop: 40, 
+  mappedContainers: {
+    paddingTop: 40,
     marginRight: 40,
-     marginTop: 20 },
+    marginTop: 20,
+  },
 });

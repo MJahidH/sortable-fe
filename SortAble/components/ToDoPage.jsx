@@ -216,7 +216,7 @@ export default function ToDoPage({
                 <GestureHandlerRootView
                   style={[
                     styles.itemContainer,
-                    { borderColor: `yellow`, borderWidth: ttsHighlight[index],borderRadius : 20,marginRight : 5 },
+                    { borderColor: `yellow`, borderWidth: ttsHighlight[index],borderRadius : 20 },
                   ]}
                 >
                   <GestureDetector
