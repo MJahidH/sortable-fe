@@ -12,6 +12,16 @@ import {
   getDoneItems,
 } from "./all-functions/get-functions";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+  PanGestureHandler,
+  State,
+} from "react-native-gesture-handler";
+
+
+
 
 const Tab = createMaterialTopTabNavigator();
 

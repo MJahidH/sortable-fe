@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView,View, Text, Button, Pressable } from "react-native";
+import { ScrollView, View, Text, Button, Pressable } from "react-native";
 import { DeleteAllDoneItems } from "./DeleteAllDoneItems";
-import {styles} from "../styleSheets"
-
+import { styles } from "../styleSheets";
+import {
+  GestureDetector,
+  GestureHandlerRootView,
+  Gesture,
+} from "react-native-gesture-handler";
 
 export default function DonePage({ style, doneItems, setDoneItems }) {
   return (
@@ -12,12 +16,22 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
           <Text style={style}>No items have been done yet </Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.contentContainer} >
+        <ScrollView contentContainerStyle={styles.contentContainer}>
           <DeleteAllDoneItems setDoneItems={setDoneItems} style={style} />
           <View style={styles.mappedContainers}>
             {doneItems.map((item, index) => {
+              const doubleTap = Gesture.Tap()
+                .numberOfTaps(2)
+                .onEnd((_event, success) => {
+                  if (success) {
+                    console.log(`hello`);
+                  }
+                });
               return (
-                <View style={[styles.toDoItemContainer,{paddingBottom : 10}]}>
+                <View
+                  key={index}
+                  style={[styles.toDoItemContainer, { paddingBottom: 10 }]}
+                >
                   <Pressable
                     style={{
                       height: 40,
@@ -29,10 +43,20 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                       borderWidth: 4,
                     }}
                   ></Pressable>
-
-                  <Text key={index} style={[style,{paddingLeft : 20,marginRight : 10,paddingTop : 10}]}>
-                    {item.title}
-                  </Text>
+                  <GestureHandlerRootView style={styles.itemContainer}>
+                    <GestureDetector gesture={Gesture.Exclusive(doubleTap)}>
+                      <View style={styles.itemContainer}>
+                        <Text
+                          style={[
+                            style,
+                            { paddingTop : 10,paddingLeft : 15 },
+                          ]}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
+                    </GestureDetector>
+                  </GestureHandlerRootView>
                 </View>
               );
             })}
