@@ -33,6 +33,7 @@ import { updateStates } from "../all-functions/update-functions";
 import * as Speech from "expo-speech";
 import { styles } from "../styleSheets";
 import textToSpeech from "../all-functions/text-to-speech";
+import highlightItem from "../all-functions/tts-highlight"
 
 export default function ToDoPage({
   style,
@@ -168,17 +169,7 @@ export default function ToDoPage({
     }
   };
 
-  const highlightItem = (index) => {
-    const newTtsHighlight = [...ttsHighlight];
-    newTtsHighlight[index] = 3;
-    setTtsHighlight([...newTtsHighlight]);
-
-    setTimeout(() => {
-      const originalState = Array(fileContent.length).fill(0);
-      setTtsHighlight([...originalState])
-
-    }, 1200);
-  };
+  
 
   return (
     <KeyboardAvoidingView
@@ -203,7 +194,7 @@ export default function ToDoPage({
               .onEnd((_event, success) => {
                 if (success) {
                   textToSpeech(toDoItem.title);
-                  highlightItem(index);
+                  highlightItem(index,ttsHighlight,setTtsHighlight,fileContent);
                 }
               });
 
