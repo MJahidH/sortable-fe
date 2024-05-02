@@ -32,7 +32,7 @@ import {
 import { updateStates } from "../all-functions/update-functions";
 import * as Speech from "expo-speech";
 import { styles } from "../styleSheets";
-import textToSpeech from "../all-functions/text-to-speech"
+import textToSpeech from "../all-functions/text-to-speech";
 
 export default function ToDoPage({
   style,
@@ -50,10 +50,8 @@ export default function ToDoPage({
   const [itemTitles, setItemTitles] = useState([]);
 
   const translateX = useRef(new Animated.Value(9)).current;
-  const [itemBackgroundColor, setItemBackgroundColor] = useState(`black`);
-  const [itemBackgroundColor2, setItemBackgroundColor2] = useState(
-    Array(fileContent.length).fill(false)
-  );
+  const [itemBackgroundColor2, setItemBackgroundColor2] = useState([]);
+  const [ttsHighlight, setTtsHighlight] = useState([]);
 
   useEffect(() => {
     setItemTitles(
@@ -62,6 +60,7 @@ export default function ToDoPage({
       })
     );
     setItemBackgroundColor2(Array(fileContent.length).fill(`black`));
+    setTtsHighlight(Array(fileContent.length).fill(0));
   }, [fileContent]);
 
   useEffect(() => {
@@ -169,7 +168,17 @@ export default function ToDoPage({
     }
   };
 
-  
+  const highlightItem = (index) => {
+    const newTtsHighlight = [...ttsHighlight];
+    newTtsHighlight[index] = 3;
+    setTtsHighlight([...newTtsHighlight]);
+
+    setTimeout(() => {
+      const originalState = Array(fileContent.length).fill(0);
+      setTtsHighlight([...originalState])
+
+    }, 1200);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -194,6 +203,7 @@ export default function ToDoPage({
               .onEnd((_event, success) => {
                 if (success) {
                   textToSpeech(toDoItem.title);
+                  highlightItem(index);
                 }
               });
 
@@ -201,7 +211,7 @@ export default function ToDoPage({
               if (success) handleEditModePress(index);
             });
             return (
-              <View key={index} style={styles.toDoItemContainer}>
+              <View key={index} style={[styles.toDoItemContainer]}>
                 <Pressable
                   style={handleColor(index)}
                   onPress={() => {
@@ -212,7 +222,12 @@ export default function ToDoPage({
                   }}
                 ></Pressable>
 
-                <GestureHandlerRootView style={styles.itemContainer}>
+                <GestureHandlerRootView
+                  style={[
+                    styles.itemContainer,
+                    { borderColor: `yellow`, borderWidth: ttsHighlight[index],borderRadius : 20 },
+                  ]}
+                >
                   <GestureDetector
                     gesture={Gesture.Exclusive(doubleTap, singleTap)}
                   >

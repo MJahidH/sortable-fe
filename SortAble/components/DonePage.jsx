@@ -25,8 +25,7 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                 .numberOfTaps(2)
                 .onEnd((_event, success) => {
                   if (success) {
-                    console.log(`hello`);
-                    textToSpeech(item.title)
+                    textToSpeech(item.title);
                   }
                 });
               return (
@@ -49,10 +48,7 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                     <GestureDetector gesture={Gesture.Exclusive(doubleTap)}>
                       <View style={styles.itemContainer}>
                         <Text
-                          style={[
-                            style,
-                            { paddingTop : 10,paddingLeft : 15 },
-                          ]}
+                          style={[style, { paddingTop: 10, paddingLeft: 15 }]}
                         >
                           {item.title}
                         </Text>
