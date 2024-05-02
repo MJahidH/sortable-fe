@@ -7,6 +7,7 @@ import {
   GestureHandlerRootView,
   Gesture,
 } from "react-native-gesture-handler";
+import textToSpeech from "../all-functions/text-to-speech";
 
 export default function DonePage({ style, doneItems, setDoneItems }) {
   return (
@@ -25,6 +26,7 @@ export default function DonePage({ style, doneItems, setDoneItems }) {
                 .onEnd((_event, success) => {
                   if (success) {
                     console.log(`hello`);
+                    textToSpeech(item.title)
                   }
                 });
               return (
